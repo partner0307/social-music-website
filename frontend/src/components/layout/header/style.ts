@@ -39,6 +39,7 @@ export const UserAvatar = styled.div`
 export const Dropdown = styled.div<{ isDropdown: boolean }>`
   position: absolute;
   top: 100%;
+  right: 2rem;
   background: ${GV('gray')};
   border: 0.5px solid ${GV('bg')};
   box-shadow: 0 10px 30px ${GV('bg')};

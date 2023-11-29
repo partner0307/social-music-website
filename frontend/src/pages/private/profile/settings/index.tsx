@@ -6,7 +6,7 @@ import { CustomButton, DeleteButton, ProfileInfo, SubmitButton, UploadButton } f
 import { GV } from '@/utils/style.util';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Upload, notification } from 'antd';
-import { updateProfile, uploadImage } from '@/actions/profile';
+import { removeImage, updateProfile, uploadImage } from '@/actions/profile';
 import { authActions } from '@/redux/auth';
 import { UPLOAD_URI } from '@/config';
 
@@ -47,6 +47,22 @@ const Settings: FC<SettingsType> = ({ modalPropsChange }) => {
     }
   }
 
+  const handleImageRemove = async (flag: number) => {
+    const result = await removeImage({ id: user.id, flag });
+    if (result.success) {
+      localStorage.setItem('token', result.accessToken);
+      notification.success({ message: 'Success', description: 'Removed successfully' });
+      dispatch(authActions.setUser({ isAuthenticated: true, user: result.accessToken }));
+      if (flag === 1) {
+        setAvatar(UPLOAD_URI + user.avatar);
+      } else {
+        setCover(UPLOAD_URI + user.cover);
+      }
+    } else {
+      notification.warning({ message: 'Warning', description: 'Oops, it has some problem.' });
+    }
+  }
+
   const beforeUpload = async (file: any, fileList: any[], flag: number) => {
     const form = new FormData;
     form.append('file', file);
@@ -57,6 +73,8 @@ const Settings: FC<SettingsType> = ({ modalPropsChange }) => {
       localStorage.setItem('token', result.accessToken);
       notification.success({ message: 'Success', description: 'Uploaded successfully' });
       dispatch(authActions.setUser({ isAuthenticated: true, user: result.accessToken }));
+    } else {
+      notification.warning({ message: 'Warning', description: 'Oops, it has some problem.' });
     }
 
     return false;
@@ -108,7 +126,7 @@ const Settings: FC<SettingsType> = ({ modalPropsChange }) => {
                   gap: '1rem'
                 }}>
                     <Upload onChange={data => handleImageChange(data.file, 1)} beforeUpload={(file, list) => beforeUpload(file, list, 1)} showUploadList={false}><UploadButton>Upload</UploadButton></Upload>
-                    <CustomButton>Delete</CustomButton>
+                    <CustomButton onClick={() => handleImageRemove(1)}>Delete</CustomButton>
                 </Flex>
             </Flex>
             <Flex $style={{
@@ -121,7 +139,7 @@ const Settings: FC<SettingsType> = ({ modalPropsChange }) => {
                   gap: '1rem'
                 }}>
                     <Upload onChange={data => handleImageChange(data.file, 2)} beforeUpload={(file, list) => beforeUpload(file, list, 2)} showUploadList={false}><UploadButton>Upload</UploadButton></Upload>
-                    <CustomButton>Delete</CustomButton>
+                    <CustomButton onClick={() => handleImageRemove(2)}>Delete</CustomButton>
                 </Flex>
             </Flex>
           </Flex>

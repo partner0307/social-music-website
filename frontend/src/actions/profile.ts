@@ -17,4 +17,12 @@ const uploadImage = async (payload: any) => {
     return result;
 }
 
-export { updateProfile, uploadImage };
+const removeImage = async (payload: any) => {
+    const result = await axios
+    .post(`${SERVER_URI}/users/remove_image`, payload)
+    .then(res => res.data);
+
+    return result;
+}
+
+export { updateProfile, uploadImage, removeImage };

@@ -23,6 +23,8 @@ router.get("/", function (req, res) {
 });
 
 router.post('/save', user.save);
+router.delete('/remove/:id', user.remove);
 router.post('/upload', upload.array('file'), user.upload);
+router.post('/remove_image', user.remove_image)
 
 module.exports = router;

@@ -20,7 +20,7 @@ const UserSchema = new User({
   email: { type: String, required: true, trim: true },
   username: { type: String, required: true, trim: true },
   displayName: { type: String, trim: true },
-  password: { type: String, required: true, trim: true },
+  password: { type: String, trim: true },
   avatar: { type: String, required: true, trim: true },
   cover: { type: String, required: true, trim: true },
   url: { type: String, required: true, trim: true },

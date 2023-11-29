@@ -2,19 +2,6 @@ import { FaUserAlt } from "react-icons/fa";
 import { IoHome } from "react-icons/io5";
 import _ROUTERS from "./route.constant";
 
-const SettingMenuData = [
-    {
-        icon: IoHome,
-        text: "Profile",
-        router: _ROUTERS._PROFILE_SETTING
-    },
-    {
-        icon: IoHome,
-        text: "Account",
-        router: _ROUTERS._ACCOUNT
-    }
-];
-
 const MenuData: any = [
     {
       icon: IoHome,
@@ -72,4 +59,4 @@ const MenuData: any = [
     }
 ];
 
-export { SettingMenuData, MenuData };
+export { MenuData };
