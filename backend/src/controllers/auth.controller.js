@@ -94,7 +94,7 @@ module.exports.oauth = (req, res) => {
       user.lastname = lastname;
       user.avatar = 'avatar.png';
       user.cover = 'cover.png';
-      user.username = `${firstname}.${lastname}.${random.slice(0, random.length-3)}`;
+      user.username = `${firstname}_${lastname}_${random.slice(0, random.length-3)}`;
       user.url = user.username;
       user.password = '';
       user.bio = '';

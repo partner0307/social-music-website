@@ -6,13 +6,9 @@ import { CustomButton, DeleteButton, ProfileInfo, SubmitButton, UploadButton } f
 import { GV } from '@/utils/style.util';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Upload, notification } from 'antd';
-import { removeImage, updateProfile, uploadImage } from '@/actions/profile';
+import { removeImage, updateProfile, uploadImage } from '@/actions/user';
 import { authActions } from '@/redux/auth';
 import { UPLOAD_URI } from '@/config';
-
-interface SettingsType {
-  modalPropsChange: (value: any) => void;
-}
 
 interface FormDataType {
   username: string,
@@ -21,7 +17,7 @@ interface FormDataType {
   bio: string
 }
 
-const Settings: FC<SettingsType> = ({ modalPropsChange }) => {
+const Settings = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: any) => state.auth);
   const [formData, setFormData] = useState<FormDataType>({
@@ -54,9 +50,10 @@ const Settings: FC<SettingsType> = ({ modalPropsChange }) => {
       notification.success({ message: 'Success', description: 'Removed successfully' });
       dispatch(authActions.setUser({ isAuthenticated: true, user: result.accessToken }));
       if (flag === 1) {
-        setAvatar(UPLOAD_URI + user.avatar);
-      } else {
-        setCover(UPLOAD_URI + user.cover);
+        setAvatar(UPLOAD_URI + 'avatar.png');
+      }
+      else if (flag === 2) {
+        setCover(UPLOAD_URI + 'cover.png');
       }
     } else {
       notification.warning({ message: 'Warning', description: 'Oops, it has some problem.' });

@@ -361,6 +361,12 @@ const GlobalStyle = createGlobalStyle`
 	.cover-image .ant-upload-wrapper .ant-upload-list .ant-upload-list-item-container {
 		width: 100%;
 	}
+	.ant-upload-wrapper .ant-upload-drag {
+		border-color: #eee;
+		&:hover {
+			border-color: #fff;
+		}
+	}
 `;
 
 export default GlobalStyle;

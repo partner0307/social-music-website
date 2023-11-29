@@ -21,6 +21,9 @@ module.exports.remove = async (req, res) => {
     console.log(req.params);
 }
 
+module.exports.follow = async (req, res) => {
+}
+
 module.exports.upload = async (req, res) => {
     User.findById(req.body.id).then(model => {
         if (model.avatar !== 'avatar.png' && req.body.flag === '1') {
@@ -47,7 +50,6 @@ module.exports.remove_image = async (req, res) => {
         if (model.avatar !== 'avatar.png' && req.body.flag === 1) {
             fs.unlink(`upload/${model.avatar}`, err => {
                 model.avatar = 'avatar.png';
-                model.cover = 'cover.png';
                 model.save().then(err => {
                     res.json({ success: true, accessToken: model.generateAccessToken() });
                 });
@@ -55,7 +57,6 @@ module.exports.remove_image = async (req, res) => {
         }
         else if (model.cover !== 'cover.png' && req.body.flag === 2) {
             fs.unlink(`upload/${model.cover}`, err => {
-                model.avatar = 'avatar.png';
                 model.cover = 'cover.png';
                 model.save().then(err => {
                     res.json({ success: true, accessToken: model.generateAccessToken() });

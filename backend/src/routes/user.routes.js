@@ -15,7 +15,6 @@ const upload = multer({
 
 
 const user = require('../controllers/user.controller.js');
-const Authenticate = require('../service/authMiddleware.js');
 
 // TEST Route
 router.get("/", function (req, res) {
@@ -24,6 +23,7 @@ router.get("/", function (req, res) {
 
 router.post('/save', user.save);
 router.delete('/remove/:id', user.remove);
+router.post('/follow', user.follow);
 router.post('/upload', upload.array('file'), user.upload);
 router.post('/remove_image', user.remove_image)
 
