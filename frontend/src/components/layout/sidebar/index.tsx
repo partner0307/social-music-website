@@ -17,7 +17,11 @@ const Sidebar = () => {
 
     const handleRoute = (router: string) => {
         if (isAuthenticated) {
-            navigate(router);
+            if (router.includes('profile')) {
+                navigate(`/profile/${user.url}`)
+            } else {
+                navigate(router);
+            }
         }
         else if (router !== '/') {
             notification.warning({ message: 'Warning', description: 'Please login!' });
@@ -50,7 +54,7 @@ const Sidebar = () => {
                                 <ListItemContainer key={key}>
                                     {!data.submenus
                                     ? (
-                                        <ListItem isActive={pathname === data.router} onClick={() => handleRoute(data.router)}>
+                                        <ListItem isActive={(pathname === data.router) || (pathname.includes('profile') && data.router.includes('profile'))} onClick={() => handleRoute(data.router)}>
                                             <data.icon />
                                             <P>{data.text}</P>
                                         </ListItem>

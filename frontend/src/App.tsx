@@ -1,12 +1,7 @@
 import React from "react";
 import { RouterProvider } from "react-router-dom";
-import { gsap } from "gsap";
-import ScrollTrigger from 'gsap/ScrollTrigger'
 import routers from "./routes";
 import { GoogleOAuthProvider } from '@react-oauth/google';
-
-gsap.registerPlugin(ScrollTrigger)
-
 
 const App: React.FC = () => {
     return (

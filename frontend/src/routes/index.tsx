@@ -1,4 +1,4 @@
-import { Outlet, createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import { Flex, Heading } from "@/components/basic";
 
 import _ROUTERS from "@/constants/route.constant";

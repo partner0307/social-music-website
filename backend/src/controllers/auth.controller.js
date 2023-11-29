@@ -8,32 +8,38 @@ const User = require("../models/User");
   1. SIGN UP USER 
 */
 
-module.exports.signup = async (req, res, next) => {
+module.exports.signup = (req, res, next) => {
   try {
     const { firstname, lastname, email, password, username } = req.body;
 
-    /* Custom methods on newUser are defined in User model */
-    const newUser = new User({
-      firstname,
-      lastname,
-      email,
-      password,
-      username,
-      avatar: "avatar.png",
-      cover: "cover.png",
-      displayName: '',
-      url: username,
-      bio: "",
-    });
-    await newUser.save(); // Save new User to DB
+    User.findOne({ email }).then(async user => {
+      if (user) {
+        res.json({ success: false, message: 'User already exists.' });
+        return;
+      } else {
+        /* Custom methods on newUser are defined in User model */
+        const user = new User;
+        user.firstname = firstname,
+        user.lastname = lastname,
+        user.email = email,
+        user.password = password,
+        user.username = username,
+        user.avatar = "avatar.png",
+        user.cover = "cover.png",
+        user.displayName = '',
+        user.url = username,
+        user.bio = "",
+        user.save().then(async err => {
+          const accessToken = await user.generateAccessToken(); // Create Access Token
 
-    const accessToken = await newUser.generateAccessToken(); // Create Access Token
-
-    // Send Response on successful Sign Up
-    res.status(201).json({
-      success: true,
-      accessToken,
-    });
+          // Send Response on successful Sign Up
+          res.status(201).json({
+            success: true,
+            accessToken,
+          });
+        });
+      }
+    })
   } catch (error) {
     console.log(error);
     next(error);
@@ -71,3 +77,31 @@ module.exports.login = async (req, res, next) => {
     next(error);
   }
 };
+
+module.exports.oauth = (req, res) => {
+  const { email, displayName, firstname, lastname } = req.body;
+
+  User.findOne({ email }).then(async user => {
+    if (user) {
+      const accessToken = await user.generateAccessToken(); // Create Access Token
+      res.json({ success: true, accessToken });
+    } else {
+      const random = Date.now().toString();
+      user = new User;
+      user.email = email;
+      user.displayName = displayName;
+      user.firstname = firstname;
+      user.lastname = lastname;
+      user.avatar = 'avatar.png';
+      user.cover = 'cover.png';
+      user.username = `${firstname}.${lastname}.${random.slice(0, random.length-3)}`;
+      user.url = user.username;
+      user.password = '';
+      user.bio = '';
+      user.save().then(async err => {
+        const accessToken = await user.generateAccessToken();
+        res.json({ success: true, accessToken });
+      });
+    }
+  })
+}

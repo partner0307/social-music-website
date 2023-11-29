@@ -2,11 +2,9 @@ import { useState, FC } from 'react';
 import { Flex, Link, P } from '@/components/basic';
 import { AuthForm, CustomButton, CustomFont, CustomLine, LetterContainer, SignupContainer, SubmitButton } from './style';
 import _ROUTERS from '@/constants/route.constant';
-import { routerer } from '@/utils/util';
 import { Checkbox, Icon, Input } from '@/components/custom';
 import { GV } from '@/utils/style.util';
-import { register } from '@/actions/auth';
-import { useNavigate } from 'react-router-dom';
+import { google_oauth, register } from '@/actions/auth';
 import { Modal, notification } from 'antd';
 import { useDispatch } from 'react-redux';
 import { authActions } from '@/redux/auth';
@@ -53,6 +51,17 @@ const Signup: FC<SignupType> = ({ modalPropsChange }) => {
         })
     }
 
+    const handleOAuth = async () => {
+        const result = await google_oauth();
+
+        if (result.success) {
+            localStorage.setItem('token', result.accessToken);
+            dispatch(authActions.setUser({ isAuthenticated: true, user: result.accessToken }));
+            modalPropsChange(0);
+            notification.success({ message: 'success', description: 'Registered successfully!' });
+        }
+    }
+
     return (
         <SignupContainer>
             <AuthForm autoComplete='off'>
@@ -74,7 +83,7 @@ const Signup: FC<SignupType> = ({ modalPropsChange }) => {
                     <CustomLine />
                 </Flex>
                 <Flex $style={{ hAlign: 'center', gap: '1rem', w: '100%' }}>
-                    <CustomButton><Icon icon='Google' /><P $style={{ size: GV('font-size-5') }}>Sign up with Google</P></CustomButton>
+                    <CustomButton type='button' onClick={() => handleOAuth()}><Icon icon='Google' /><P $style={{ size: GV('font-size-5') }}>Continue with Google</P></CustomButton>
                 </Flex>
                 <Flex $style={{ vAlign: 'center', gap: '0.25rem', w: '100%', hAlign: 'center' }}>
                     <CustomFont>Already have an account? </CustomFont>

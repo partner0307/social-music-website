@@ -5,7 +5,7 @@ import { Checkbox, Icon, Input } from '@/components/custom';
 import _ROUTERS from '@/constants/route.constant';
 import { GV } from '@/utils/style.util';
 import { Modal, notification } from 'antd';
-import { login } from '@/actions/auth';
+import { google_oauth, login } from '@/actions/auth';
 import { useDispatch } from 'react-redux';
 import { authActions } from '@/redux/auth';
 
@@ -37,6 +37,17 @@ const Signin: FC<SigninType> = ({ modalPropsChange }) => {
         }
     }
 
+    const handleOAuth = async () => {
+        const result = await google_oauth();
+
+        if (result.success) {
+            localStorage.setItem('token', result.accessToken);
+            dispatch(authActions.setUser({ isAuthenticated: true, user: result.accessToken }));
+            modalPropsChange(0);
+            notification.success({ message: 'success', description: 'Login Success!' });
+        }
+    }
+
     return (
         <SigninContainer>
             <AuthForm autoComplete='off'>
@@ -57,7 +68,7 @@ const Signin: FC<SigninType> = ({ modalPropsChange }) => {
                     <CustomLine />
                 </Flex>
                 <Flex $style={{ hAlign: 'center', gap: '1rem', w: '100%' }}>
-                    <CustomButton><Icon icon='Google' /><Span $style={{ size: GV('font-size-5') }}>Continue with Google</Span></CustomButton>
+                    <CustomButton type='button' onClick={() => handleOAuth()}><Icon icon='Google' /><Span $style={{ size: GV('font-size-5') }}>Continue with Google</Span></CustomButton>
                 </Flex>
                 <Flex $style={{ vAlign: 'center', gap: '0.25rem', w: '100%', hAlign: 'center' }}>
                     <CustomFont1>Don't have an account? </CustomFont1>

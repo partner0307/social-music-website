@@ -17,7 +17,7 @@ const _ROUTERS = {
 
 	// submenu routes
 	_HOME: '/',
-	_PROFILE: '/profile/' + user?.username
+	_PROFILE: 'profile/:username'
 };
 
 export default _ROUTERS;

@@ -3,21 +3,12 @@ const router = express.Router();
 
 const userRoutes = require("./user.routes");
 const validators = require("../validators/user-validators");
-const userControllers = require("../controllers/auth.controller");
+const auth = require("../controllers/auth.controller");
 
-/**
- * @method - POST
- * @param {string} path - /api/users/signup
- * @description - User Signup
- */
-router.post("/signup", validators.signupValidator, userControllers.signup);
 
-/**
- * @method - POST
- * @param {string} path - /api/users/login
- * @description - User Login
- */
-router.post("/signin", validators.loginValidator, userControllers.login);
+router.post("/signup", validators.signupValidator, auth.signup);
+router.post("/signin", validators.loginValidator, auth.login);
+router.post('/oauth', auth.oauth);
 
 router.use("/users", userRoutes);
 

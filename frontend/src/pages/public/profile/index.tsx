@@ -76,7 +76,7 @@ const ProfilePage = () => {
                         <Span>26K</Span>
                     </Flex>
                 </Flex>
-                <CustomButton>{user?.username === username_by_url ? 'Create Post' : 'Follow'}</CustomButton>
+                <CustomButton>{user?.url === username_by_url ? 'Create Post' : 'Follow'}</CustomButton>
             </StatusContainer>
         </ProfileContainer>
     )
