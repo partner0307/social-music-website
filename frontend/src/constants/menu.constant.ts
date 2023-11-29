@@ -1,0 +1,75 @@
+import { FaUserAlt } from "react-icons/fa";
+import { IoHome } from "react-icons/io5";
+import _ROUTERS from "./route.constant";
+
+const SettingMenuData = [
+    {
+        icon: IoHome,
+        text: "Profile",
+        router: _ROUTERS._PROFILE_SETTING
+    },
+    {
+        icon: IoHome,
+        text: "Account",
+        router: _ROUTERS._ACCOUNT
+    }
+];
+
+const MenuData: any = [
+    {
+      icon: IoHome,
+      text: "Home",
+      router: _ROUTERS._HOME,
+    },
+    {
+      icon: FaUserAlt,
+      text: "Profile",
+      router: _ROUTERS._PROFILE,
+    },
+    {
+      icon: FaUserAlt,
+      text: 'Brackets',
+      router: '#',
+      submenus: [
+        {
+          icon: FaUserAlt,
+          text: 'Launch Tournament',
+          router: '#'
+        },
+        {
+          icon: FaUserAlt,
+          text: 'Yearly',
+          router: '#'
+        },
+        {
+          icon: FaUserAlt,
+          text: 'Quarterly',
+          router: '#'
+        },
+        {
+          icon: FaUserAlt,
+          text: 'Weekly',
+          router: '#'
+        },
+        {
+          icon: FaUserAlt,
+          text: 'Community',
+          router: '#'
+        },
+      ]
+    },
+    {
+      icon: FaUserAlt,
+      text: 'Store',
+      router: '#',
+      submenus: [
+        {
+          icon: FaUserAlt,
+          text: 'Producer Packs',
+          router: '#'
+        }
+      ]
+    }
+];
+
+export { SettingMenuData, MenuData };
