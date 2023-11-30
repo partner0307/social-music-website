@@ -1,6 +1,5 @@
 import { GV } from '@/utils/style.util';
 import styled from 'styled-components';
-import Background from '@/assets/img/auth-background.gif';
 
 export const SigninContainer = styled.div`
     position: relative;
@@ -25,9 +24,14 @@ export const SignupButton = styled.button`
 export const AuthForm = styled.form`
     display: flex;
     max-width: 30rem;
+    width: 100%;
     padding: 3.5rem 2rem 2rem;
     flex-direction: column;
     gap: 1rem;
+
+    @media (max-width: 465px) {
+        padding: 3.5rem 0;
+    }
 `;
 
 export const SubmitButton = styled.button`

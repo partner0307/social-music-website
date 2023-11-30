@@ -367,6 +367,13 @@ const GlobalStyle = createGlobalStyle`
 			border-color: #fff;
 		}
 	}
+	.custom-upload > .ant-upload-select {
+		display: block;
+	}
+	.custom-drawer .ant-drawer-wrapper-body {
+		background: ${GV('gray')};
+		backdrop-filter: blur(3px);
+	}
 `;
 
 export default GlobalStyle;

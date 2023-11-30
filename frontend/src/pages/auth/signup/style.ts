@@ -15,6 +15,10 @@ export const AuthForm = styled.form`
     padding: 2rem;
     flex-direction: column;
     gap: 1rem;
+
+    @media (max-width: 465px) {
+        padding: 3.5rem 0;
+    }
 `;
 
 export const SubmitButton = styled.button`

@@ -32,7 +32,7 @@ export const Input: React.FC<InputPropsType> = ({
             {label && (<InputLabel>{label}</InputLabel>)}
             <InputContent>
                 <InputWrapper padding={padding ?? ''}>
-                    <Flex $style={{ gap: '1rem' }}>
+                    <Flex $style={{ w: '100%' }}>
                         {preSide}
                         <StyledInput {...rest} />
                     </Flex>

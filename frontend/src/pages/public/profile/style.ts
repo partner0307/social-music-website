@@ -13,6 +13,8 @@ export const ProfileContainer = styled.div`
 `;
 
 export const BannerContainer = styled.div<{ src: string }>`
+    display: flex;
+    align-items: center;
     position: relative;
     ${({ src }) => src && `background: url(${src});`}
     background-size: cover;
@@ -20,15 +22,20 @@ export const BannerContainer = styled.div<{ src: string }>`
     width: 100%;
     height: 15rem;
     border-radius: 1rem;
-    padding: 5rem 2rem 2rem;
+    padding: 2rem;
+
+    @media (max-width: 1024px) {
+        height: 20rem;
+    }
 `;
 
 export const AvatarContainer = styled.img`
     /* ${({ src }) => src && `background: url(${src});`} */
     /* background-size: contain; */
-    width: 120px;
-    height: 120px;
+    width: 10rem;
+    height: 10rem;
     border-radius: 1rem;
+    border: 2px solid ${GV('white')};
 `;
 
 export const BioContainer = styled.div`
@@ -44,6 +51,13 @@ export const StatusContainer = styled.div`
     padding: 0.5rem 1.5rem;
     background: ${GV('secondary')};
     border-radius: 1rem;
+
+    @media (max-width: 450px) {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1.5rem;
+    }
 `;
 
 export const CustomButton = styled.button`

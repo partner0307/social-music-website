@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { CustomButton, Dropdown, DropdownItemContainer, HeaderContainer, UserAvatar, UserInfo } from "./style";
-import { Flex, P } from "@/components/basic";
+import { AuthButtonWrapper, AvatarImage, CustomButton, Dropdown, DropdownItemContainer, HeaderContainer, IconWrapperButton, MobileAuthButtonWrapper, UserAvatar, UserInfo } from "./style";
+import { Flex, Link, P } from "@/components/basic";
 import Image from "@/components/basic/img";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,10 @@ import { FaArrowRightFromBracket } from "react-icons/fa6";
 import AuthModal from "@/pages/auth";
 import SettingModal from "@/pages/private/profile";
 import { UPLOAD_URI } from "@/config";
+import { Icon } from "@/components/custom";
+import Logo from '@/assets/img/logo.png';
+import MenuDrawer from "./elements/drawer";
+import { menuActions } from "@/redux/menu";
 
 const Header = () => {
     const navigate = useNavigate();
@@ -24,6 +28,7 @@ const Header = () => {
 
     const handleAuthVisible = useCallback((value: number) => setAuthVisible(value), [setAuthVisible]);
     const handleSettingVisible = (value: boolean) => setSettingVisible(value);
+    const handleMobileVisible = (value: boolean) => dispatch(menuActions.setVisible(value));
 
     const Logout = () => {
         localStorage.removeItem('token');
@@ -58,31 +63,54 @@ const Header = () => {
         <HeaderContainer>
             {!isAuthenticated 
             ? (
-                <Flex $style={{
-                    gap: '1rem'
-                }}>
-                    <CustomButton onClick={() => setAuthVisible(1)}>Sign In</CustomButton>
-                    <CustomButton onClick={() => setAuthVisible(2)}>Sign Up</CustomButton>
-                </Flex>
+                <>
+                    <AuthButtonWrapper>
+                        <CustomButton onClick={() => setAuthVisible(1)}>Sign In</CustomButton>
+                        <CustomButton onClick={() => setAuthVisible(2)}>Sign Up</CustomButton>
+                    </AuthButtonWrapper>
+                    <MobileAuthButtonWrapper>
+                        <Link to="/">
+                            <Image src={Logo} alt="No Logo" $style={{
+                                w: '7rem',
+                                h: '2rem',
+                                bradius: '0'
+                            }} />
+                        </Link>
+                        <IconWrapperButton onClick={() => handleMobileVisible(true)}><Icon icon="Menu" /></IconWrapperButton>
+                    </MobileAuthButtonWrapper>
+                </>
             )
             : (
-                <UserInfo>
-                    <UserAvatar ref={menuButtonRef}>
-                        <Image src={`${UPLOAD_URI + user.avatar}`} alt="" $style={{ w: '1.5rem', h: '1.5rem', bradius: '50%' }} />
-                        <P>{user.fullName}</P>
-                    </UserAvatar>
-                    <Dropdown isDropdown={isDropdown} ref={dropdownRef}>
-                        <DropdownItemContainer onClick={() => { setIsDropdown(false); handleSettingVisible(true); }}>
-                            <DiAptana />
-                            <P>Settings</P>
-                        </DropdownItemContainer>
-                        <DropdownItemContainer onClick={() => { setIsDropdown(false); Logout(); }}>
-                            <FaArrowRightFromBracket />
-                            <P>Logout</P>
-                        </DropdownItemContainer>
-                    </Dropdown>
-                </UserInfo>
+                <Flex $style={{
+                    hAlign: 'flex-end',
+                    vAlign: 'center',
+                    w: '100%',
+                    queries: {
+                        768: {
+                            hAlign: 'space-between'
+                        }
+                    }
+                }}>
+                    <IconWrapperButton onClick={() => handleMobileVisible(true)}><Icon icon="Menu" /></IconWrapperButton>
+                    <UserInfo>
+                        <UserAvatar ref={menuButtonRef}>
+                            <AvatarImage src={`${UPLOAD_URI + user.avatar}`} alt="" />
+                            <P>{user.fullName}</P>
+                        </UserAvatar>
+                        <Dropdown isDropdown={isDropdown} ref={dropdownRef}>
+                            <DropdownItemContainer onClick={() => { setIsDropdown(false); handleSettingVisible(true); }}>
+                                <DiAptana />
+                                <P>Settings</P>
+                            </DropdownItemContainer>
+                            <DropdownItemContainer onClick={() => { setIsDropdown(false); Logout(); }}>
+                                <FaArrowRightFromBracket />
+                                <P>Logout</P>
+                            </DropdownItemContainer>
+                        </Dropdown>
+                    </UserInfo>
+                </Flex>
             )}
+            <MenuDrawer authModalChange={handleAuthVisible} />
             <AuthModal visible={authVisible} onChange={handleAuthVisible} />
             <SettingModal visible={settingVisible} onChange={handleSettingVisible} />
         </HeaderContainer>

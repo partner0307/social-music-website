@@ -23,7 +23,7 @@ const Sidebar = () => {
                 navigate(router);
             }
         }
-        else if (router !== '/') {
+        else if (router !== '/' && !isAuthenticated) {
             notification.warning({ message: 'Warning', description: 'Please login!' });
         }
     }
@@ -61,12 +61,12 @@ const Sidebar = () => {
                                     ) : (
                                         <NestedItemList>
                                             <NestedHand>
-                                                <data.icon />
+                                                {/* <data.icon /> */}
                                                 <P>{data.text}</P>
                                             </NestedHand>
                                             {data.submenus.map((nestedItem: any, key: number) => (
                                                 <NestedItem key={key}>
-                                                    <data.icon size='12' />
+                                                    {/* <data.icon size='12' /> */}
                                                     <P $style={{ size: GV('font-size-6') }}>{nestedItem.text}</P>
                                                 </NestedItem>
                                             ))}

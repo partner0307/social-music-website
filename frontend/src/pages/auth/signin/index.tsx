@@ -52,7 +52,7 @@ const Signin: FC<SigninType> = ({ modalPropsChange }) => {
         <SigninContainer>
             <AuthForm autoComplete='off'>
                 <Flex $style={{ w: '100%', hAlign: 'center' }}>
-                    <Flex $style={{ fDirection: 'column', w: '30rem', gap: '1.25rem' }}>
+                    <Flex $style={{ fDirection: 'column', maxW: '30rem', w: '100%', gap: '1.25rem' }}>
                         <Input value={email} type='email' name='email' onChange={onChange} preSide={<Icon icon='User' />} placeholder='Email Address' />
                         <Input type="password" value={password} name='password' onChange={onChange} preSide={<Icon icon='Lock' />} placeholder='Password' />
                         <SubmitButton onClick={onSubmit}>Submit</SubmitButton>

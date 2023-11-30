@@ -10,6 +10,10 @@ export const PublicLayoutWrapper = styled.div`
     height: 100vh;
 
     overflow: hidden;
+
+    @media (max-width: 450px) {
+        overflow: auto;
+    }
 `;
 
 export const MainWrapper = styled.div`
