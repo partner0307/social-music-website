@@ -14,30 +14,37 @@ module.exports.signup = (req, res, next) => {
 
     User.findOne({ email }).then(async user => {
       if (user) {
-        res.json({ success: false, message: 'User already exists.' });
+        res.json({ success: false, message: 'Email already exists.' });
         return;
       } else {
-        /* Custom methods on newUser are defined in User model */
-        const user = new User;
-        user.firstname = firstname,
-        user.lastname = lastname,
-        user.email = email,
-        user.password = password,
-        user.username = username,
-        user.avatar = "avatar.png",
-        user.cover = "cover.png",
-        user.displayName = '',
-        user.url = username,
-        user.bio = "",
-        user.save().then(async err => {
-          const accessToken = await user.generateAccessToken(); // Create Access Token
-
-          // Send Response on successful Sign Up
-          res.status(201).json({
-            success: true,
-            accessToken,
-          });
-        });
+        User.findOne({ username }).then(async model => {
+          if (model) {
+            res.json({ success: false, message: 'Username already exists.' });
+            return;
+          } else {
+            /* Custom methods on newUser are defined in User model */
+            const model = new User;
+            model.firstname = firstname,
+            model.lastname = lastname,
+            model.email = email,
+            model.password = password,
+            model.username = username,
+            model.avatar = "avatar.png",
+            model.cover = "cover.png",
+            model.displayName = '',
+            model.url = username,
+            model.bio = "",
+            model.save().then(async err => {
+              const accessToken = await model.generateAccessToken(); // Create Access Token
+  
+              // Send Response on successful Sign Up
+              res.status(201).json({
+                success: true,
+                accessToken,
+              });
+            });
+          }
+        })
       }
     })
   } catch (error) {

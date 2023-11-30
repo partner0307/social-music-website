@@ -20,13 +20,11 @@ const Header = () => {
     const dispatch = useDispatch();
     const { isAuthenticated, user } = useSelector((state: any) => state.auth);
     const [isDropdown, setIsDropdown] = useState<boolean>(false);
-    const [authVisible, setAuthVisible] = useState<number>(0);
     const [settingVisible, setSettingVisible] = useState<boolean>(false);
     
     const dropdownRef: any = useRef(null);
     const menuButtonRef:any = useRef(null);
 
-    const handleAuthVisible = useCallback((value: number) => setAuthVisible(value), [setAuthVisible]);
     const handleSettingVisible = (value: boolean) => setSettingVisible(value);
     const handleMobileVisible = (value: boolean) => dispatch(menuActions.setVisible(value));
 
@@ -65,8 +63,8 @@ const Header = () => {
             ? (
                 <>
                     <AuthButtonWrapper>
-                        <CustomButton onClick={() => setAuthVisible(1)}>Sign In</CustomButton>
-                        <CustomButton onClick={() => setAuthVisible(2)}>Sign Up</CustomButton>
+                        <CustomButton onClick={() => dispatch(authActions.setAuthVisible(1))}>Sign In</CustomButton>
+                        <CustomButton onClick={() => dispatch(authActions.setAuthVisible(2))}>Sign Up</CustomButton>
                     </AuthButtonWrapper>
                     <MobileAuthButtonWrapper>
                         <Link to="/">
@@ -110,8 +108,8 @@ const Header = () => {
                     </UserInfo>
                 </Flex>
             )}
-            <MenuDrawer authModalChange={handleAuthVisible} />
-            <AuthModal visible={authVisible} onChange={handleAuthVisible} />
+            <MenuDrawer />
+            <AuthModal />
             <SettingModal visible={settingVisible} onChange={handleSettingVisible} />
         </HeaderContainer>
     )

@@ -9,6 +9,7 @@ import { Modal, Upload, notification } from 'antd';
 import { removeImage, updateProfile, uploadImage } from '@/actions/user';
 import { authActions } from '@/redux/auth';
 import { UPLOAD_URI } from '@/config';
+import { useNavigate } from 'react-router-dom';
 
 interface FormDataType {
   username: string,
@@ -18,6 +19,7 @@ interface FormDataType {
 }
 
 const Settings = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state: any) => state.auth);
   const [formData, setFormData] = useState<FormDataType>({
@@ -38,7 +40,7 @@ const Settings = () => {
     reader.onload = () => {
       if (flag === 1)
         setAvatar(reader.result);
-      else
+      else if (flag === 2)
         setCover(reader.result);
     }
   }
@@ -89,6 +91,7 @@ const Settings = () => {
           localStorage.setItem('token', result.accessToken);
           notification.success({ message: 'Success', description: 'Updated successfully' });
           dispatch(authActions.setUser({ isAuthenticated: true, user: result.accessToken }));
+          navigate(result.model.url);
         }
       }
     })
@@ -170,7 +173,7 @@ const Settings = () => {
         <ProfileInfo autoComplete='off' onSubmit={onSubmit}>
           <Input value={formData.username} onChange={onChange} name='username' placeholder='Username' />
           <Input value={formData.displayName} onChange={onChange} name='displayName' placeholder='Display Name' />
-          <Input value={formData.url} onChange={onChange} preSide={<Span>https://gromm.com/</Span>} name='url' placeholder='Profile URL' />
+          <Input value={formData.url} onChange={onChange} gap='0' preSide={<Span>https://gromm.com/</Span>} name='url' placeholder='Profile URL' />
           <Textarea value={formData.bio} onChange={onChange} name='bio' placeholder='Bio' />
           <SubmitButton type='submit'>Save</SubmitButton>
           <MobileContainer>

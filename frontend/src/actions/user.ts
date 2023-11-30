@@ -1,6 +1,14 @@
 import { SERVER_URI } from '@/config';
 import axios from 'axios';
 
+const getUser = async (payload: any) => {
+    const result = await axios
+    .post(`${SERVER_URI}/users/index`, payload)
+    .then(res => res.data);
+
+    return result;
+}
+
 const updateProfile = async (payload: any) => {
     const result = await axios
     .post(`${SERVER_URI}/users/save`, payload)
@@ -33,4 +41,4 @@ const removeImage = async (payload: any) => {
     return result;
 }
 
-export { updateProfile, uploadImage, removeImage, followUser };
+export { getUser, updateProfile, uploadImage, removeImage, followUser };

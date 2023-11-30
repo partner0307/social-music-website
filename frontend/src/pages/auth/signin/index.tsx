@@ -1,4 +1,4 @@
-import { useState, FC } from 'react';
+import { useState, FC, useEffect } from 'react';
 import { Flex, Link, P, Span } from '@/components/basic';
 import { AuthForm, CustomButton, CustomFont, CustomFont1, CustomLine, LetterContainer, SigninContainer, SubmitButton } from './style';
 import { Checkbox, Icon, Input } from '@/components/custom';
@@ -6,15 +6,12 @@ import _ROUTERS from '@/constants/route.constant';
 import { GV } from '@/utils/style.util';
 import { Modal, notification } from 'antd';
 import { google_oauth, login } from '@/actions/auth';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from '@/redux/auth';
 
-type SigninType = {
-    modalPropsChange: (value: any) => void
-}
-
-const Signin: FC<SigninType> = ({ modalPropsChange }) => {
+const Signin: FC = () => {
     const dispatch = useDispatch();
+    const { authVisible } = useSelector((state: any) => state.auth);
     const [isAgree, setAgree] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
@@ -25,13 +22,23 @@ const Signin: FC<SigninType> = ({ modalPropsChange }) => {
 
     const onSubmit = async (e: any) => {
         e.preventDefault();
+
+        if (formData.email === '') {
+            notification.warning({ message: 'Warning', description: 'Please input email.' });
+            return;
+        }
+        if (formData.password === '') {
+            notification.warning({ message: 'Warning', description: 'Please input password' });
+            return;
+        }
         
         const result = await login(formData);
         if (result.success) {
             localStorage.setItem('token', result.accessToken);
-            dispatch(authActions.setUser({ isAuthenticated: true, user: result.accessToken}));
-            modalPropsChange(0);
             notification.success({ message: 'Success', description: 'Login Success!' });
+            dispatch(authActions.setUser({ isAuthenticated: true, user: result.accessToken}));
+            dispatch(authActions.setAuthVisible(0));
+            setFormData({ email: '', password: '' });
         } else {
             notification.warning({ message: 'Warning', description: result.message });
         }
@@ -43,10 +50,16 @@ const Signin: FC<SigninType> = ({ modalPropsChange }) => {
         if (result.success) {
             localStorage.setItem('token', result.accessToken);
             dispatch(authActions.setUser({ isAuthenticated: true, user: result.accessToken }));
-            modalPropsChange(0);
+            dispatch(authActions.setAuthVisible(0));
+            setFormData({ email: '', password: '' });
             notification.success({ message: 'success', description: 'Login Success!' });
         }
     }
+
+    useEffect(() => {
+        if (authVisible)
+            setFormData({ email: '', password: '' });
+    }, [authVisible]);
 
     return (
         <SigninContainer>
@@ -72,7 +85,7 @@ const Signin: FC<SigninType> = ({ modalPropsChange }) => {
                 </Flex>
                 <Flex $style={{ vAlign: 'center', gap: '0.25rem', w: '100%', hAlign: 'center' }}>
                     <CustomFont1>Don't have an account? </CustomFont1>
-                    <Link to='#'><Span $style={{ size: GV('font-size-5'), color: 'purple' }} onClick={() => modalPropsChange(2)}>SignUp here</Span></Link>
+                    <Link to='#'><Span $style={{ size: GV('font-size-5'), color: 'purple' }} onClick={() => dispatch(authActions.setAuthVisible(2))}>SignUp here</Span></Link>
                 </Flex>
             </AuthForm>
         </SigninContainer>

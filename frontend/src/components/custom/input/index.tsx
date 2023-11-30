@@ -14,7 +14,8 @@ type InputPropsType = {
     radius?: string,
     bg?: string,
     border?: string,
-    name?: string
+    name?: string,
+    gap?: string
 }
 
 export const Input: React.FC<InputPropsType> = ({
@@ -25,6 +26,7 @@ export const Input: React.FC<InputPropsType> = ({
     radius,
     bg,
     border,
+    gap,
     ...rest
 }) => {
     return (
@@ -32,7 +34,7 @@ export const Input: React.FC<InputPropsType> = ({
             {label && (<InputLabel>{label}</InputLabel>)}
             <InputContent>
                 <InputWrapper padding={padding ?? ''}>
-                    <Flex $style={{ w: '100%' }}>
+                    <Flex $style={{ gap: gap ?? '1rem', w: '100%' }}>
                         {preSide}
                         <StyledInput {...rest} />
                     </Flex>

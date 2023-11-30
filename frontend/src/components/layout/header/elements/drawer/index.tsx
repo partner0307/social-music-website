@@ -7,10 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { ListItem, ListItemContainer, NestedHand, NestedItem, NestedItemList } from './style';
 import { GV } from '@/utils/style.util';
 import { menuActions } from '@/redux/menu';
-
-interface MenuDrawerType {
-    authModalChange: (value: any) => void;
-}
+import { authActions } from '@/redux/auth';
 
 const authMenus = [
     {
@@ -23,7 +20,7 @@ const authMenus = [
     }
 ]
 
-const MenuDrawer: FC<MenuDrawerType> = ({ authModalChange }) => {
+const MenuDrawer: FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { visible } = useSelector((state: any) => state.menu);
@@ -39,11 +36,11 @@ const MenuDrawer: FC<MenuDrawerType> = ({ authModalChange }) => {
             }
         }
         if (router.includes('signin')) {
-            authModalChange(1);
+            dispatch(authActions.setAuthVisible(1));
             dispatch(menuActions.setVisible(false));
         }
         else if (router.includes('signup')) {
-            authModalChange(2);
+            dispatch(authActions.setAuthVisible(2));
             dispatch(menuActions.setVisible(false));
         }
         else if (router !== '/' && !isAuthenticated) {

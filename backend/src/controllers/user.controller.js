@@ -1,7 +1,17 @@
 const fs = require('fs');
 const User = require('../models/User');
 
-module.exports.index = async (req, res) => {};
+module.exports.index = async (req, res) => {
+    User.findOne({ url: req.body.url }).then(model => {
+        if (model) {
+            model.populate('posts', err => {
+                res.json({ success: true, model });
+            })
+        } else {
+            res.json({ success: false });
+        }
+    })
+};
 
 module.exports.save = async (req, res) => {
     User.findById(req.body.id).then(model => {
@@ -22,6 +32,35 @@ module.exports.remove = async (req, res) => {
 }
 
 module.exports.follow = async (req, res) => {
+    User.findOne({ url: req.body.url }).then(user => {
+        if (user.followers.includes(req.body.id)) {
+            const followers_temp = user.followers.filter(p => p.toString() !== req.body.id);
+            user.followers = followers_temp;
+            user.save().then(err => {
+                User.findById(req.body.id).then(model => {
+                    const following_temp = model.following.filter(p => p.toString() !== user._id.toString());
+                    model.following = following_temp;
+                    model.save().then(err => {
+                        model.populate('posts', err => {
+                            res.json({ success: true, user, accessToken: model.generateAccessToken() });
+                        })
+                    })
+                })
+            })
+        } else {
+            user.followers.push(req.body.id);
+            user.save().then(err => {
+                User.findById(req.body.id).then(model => {
+                    model.following.push(user._id);
+                    model.save().then(err => {
+                        model.populate('posts', err => {
+                            res.json({ success: true, user, accessToken: model.generateAccessToken() });
+                        })
+                    })
+                })
+            });
+        }
+    })
 }
 
 module.exports.upload = async (req, res) => {
