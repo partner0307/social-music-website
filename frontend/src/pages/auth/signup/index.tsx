@@ -1,20 +1,17 @@
-import { useState, FC } from 'react';
-import { Flex, Link, P } from '@/components/basic';
+import { useState, FC, useEffect } from 'react';
+import { Flex, Link, P, Span } from '@/components/basic';
 import { AuthForm, CustomButton, CustomFont, CustomLine, LetterContainer, SignupContainer, SubmitButton } from './style';
 import _ROUTERS from '@/constants/route.constant';
 import { Checkbox, Icon, Input } from '@/components/custom';
 import { GV } from '@/utils/style.util';
 import { google_oauth, register } from '@/actions/auth';
 import { Modal, notification } from 'antd';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from '@/redux/auth';
 
-type SignupType = {
-    modalPropsChange: (value: any) => void
-}
-
-const Signup: FC<SignupType> = ({ modalPropsChange }) => {
+const Signup: FC = () => {
     const dispatch = useDispatch();
+    const { authVisible } = useSelector((state: any) => state.auth);
     const [formData, setFormData] = useState({
         firstname: '',
         lastname: '',
@@ -29,11 +26,47 @@ const Signup: FC<SignupType> = ({ modalPropsChange }) => {
 
     const onSubmit = (e: any) => {
         e.preventDefault();
+
+        if (formData.firstname === '') {
+            notification.warning({ message: 'Warning', description: 'Please input first name.' });
+            return;
+        }
+
+        if (formData.lastname === '') {
+            notification.warning({ message: 'Warning', description: 'Please input last name.' });
+            return;
+        }
+
+        if (formData.username === '') {
+            notification.warning({ message: 'Warning', description: 'Please input username.' });
+            return;
+        }
+
+        if (formData.email === '') {
+            notification.warning({ message: 'Warning', description: 'Please input email.' });
+            return;
+        }
+
+        if (formData.password === '') {
+            notification.warning({ message: 'Warning', description: 'Please input password.' });
+            return;
+        }
+
+        if (formData.confirm === '') {
+            notification.warning({ message: 'Warning', description: 'Please input confirm.' });
+            return;
+        }
+
+        if (formData.password !== formData.confirm) {
+            notification.warning({ message: 'Warning', description: 'Please check password. Not match.' });
+            return;
+        }
         
         if (!isAgree) {
             notification.warning({ message: 'Warning', description: 'Please check our terms of service and privacy policies' });
             return;
         }
+        
         Modal.confirm({
             title: 'Are you sure ?',
             content: 'Do you want to register this informations ?',
@@ -42,7 +75,8 @@ const Signup: FC<SignupType> = ({ modalPropsChange }) => {
                 if (result.success) {
                     localStorage.setItem('token', result.accessToken);
                     dispatch(authActions.setUser({ isAuthenticated: true, user: result.accessToken }));
-                    modalPropsChange(0);
+                    dispatch(authActions.setAuthVisible(0));
+                    setFormData({ firstname: '', lastname: '', username: '', email: '', password: '', confirm: '' });
                     notification.success({ message: 'Success', description: 'Registered successfully!' });
                 } else {
                     notification.warning({ message: 'Warning', description: result.message });
@@ -57,10 +91,16 @@ const Signup: FC<SignupType> = ({ modalPropsChange }) => {
         if (result.success) {
             localStorage.setItem('token', result.accessToken);
             dispatch(authActions.setUser({ isAuthenticated: true, user: result.accessToken }));
-            modalPropsChange(0);
+            dispatch(authActions.setAuthVisible(0));
+            setFormData({ firstname: '', lastname: '', username: '', email: '', password: '', confirm: '' });
             notification.success({ message: 'success', description: 'Registered successfully!' });
         }
     }
+
+    useEffect(() => {
+        if (authVisible)
+            setFormData({ firstname: '', lastname: '', username: '', email: '', password: '', confirm: '' });
+    }, [authVisible]);
 
     return (
         <SignupContainer>
@@ -87,7 +127,7 @@ const Signup: FC<SignupType> = ({ modalPropsChange }) => {
                 </Flex>
                 <Flex $style={{ vAlign: 'center', gap: '0.25rem', w: '100%', hAlign: 'center' }}>
                     <CustomFont>Already have an account? </CustomFont>
-                    <Link to='#'><P $style={{ size: GV('font-size-5'), color: 'purple' }} onClick={() => modalPropsChange(1)}>Sign In</P></Link>
+                    <Link to='#'><P $style={{ size: GV('font-size-5'), color: 'purple' }} onClick={() => dispatch(authActions.setAuthVisible(1))}>Sign In</P></Link>
                 </Flex>
             </AuthForm>
         </SignupContainer>

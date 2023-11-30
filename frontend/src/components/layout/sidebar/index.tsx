@@ -1,4 +1,3 @@
-import React from 'react';
 import { Flex, Link, P } from '@/components/basic';
 import _ROUTERS from '@/constants/route.constant';
 import { ListItem, ListItemContainer, NestedHand, NestedItem, NestedItemList, SidebarContainer, SidebarWrapper } from './style';
@@ -11,20 +10,22 @@ import { notification } from 'antd';
 import { GV } from '@/utils/style.util';
 
 const Sidebar = () => {
-    const navigate = useNavigate();
     const { isAuthenticated, user } = useSelector((state: any) => state.auth);
     const { hash, pathname, search } = useLocation();
 
     const handleRoute = (router: string) => {
         if (isAuthenticated) {
-            if (router.includes('profile')) {
-                navigate(`/profile/${user.url}`)
+            if (router.includes('username')) {
+                window.location.href = `/${user.url}`;
             } else {
-                navigate(router);
+                window.location.href = router;
             }
         }
         else if (router !== '/' && !isAuthenticated) {
             notification.warning({ message: 'Warning', description: 'Please login!' });
+        }
+        else if (router === '/' && !isAuthenticated) {
+            window.location.href = router;
         }
     }
 
@@ -54,7 +55,7 @@ const Sidebar = () => {
                                 <ListItemContainer key={key}>
                                     {!data.submenus
                                     ? (
-                                        <ListItem isActive={(pathname === data.router) || (pathname.includes('profile') && data.router.includes('profile'))} onClick={() => handleRoute(data.router)}>
+                                        <ListItem isActive={(pathname === data.router) || (data.router !== '/' && pathname.includes(user.url))} onClick={() => handleRoute(data.router)}>
                                             <data.icon />
                                             <P>{data.text}</P>
                                         </ListItem>

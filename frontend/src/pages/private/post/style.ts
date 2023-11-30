@@ -12,18 +12,7 @@ export const CustomButton = styled.button`
     }
 `;
 
-export const UploadWrapper = styled.div`
+export const TutorWrapper = styled.div`
     display: flex;
     cursor: pointer;
 `;
-
-export const UploadButtonWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: url(${Banner});
-    background-position: center;
-    background-size: cover;
-    width: 100%;
-    height: 12rem;
-`

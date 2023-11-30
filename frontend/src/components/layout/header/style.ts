@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 export const HeaderContainer = styled.header`
   display: flex;
+  justify-content: flex-end;
   align-items: center;
   gap: 1rem;
   padding: 2rem 2rem 1rem;

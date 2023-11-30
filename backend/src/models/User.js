@@ -26,6 +26,7 @@ const UserSchema = new User({
   url: { type: String, required: true, trim: true },
   followers: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
   following: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
+  posts: [{ type: mongoose.Types.ObjectId, ref: 'Post' }],
   bio: { type: String, trim: true },
 });
 
@@ -44,6 +45,15 @@ UserSchema.pre("save", async function (next) {
   }
 });
 
+UserSchema.pre('findOne', async function (next) {
+  try {
+    this.populate('posts');
+    next();
+  } catch (error) {
+    next(error);
+  }
+})
+
 /* 
 3. ATTACH CUSTOM INSTANCE METHODS
  */
@@ -55,15 +65,17 @@ UserSchema.methods.generateAccessToken = function () {
     {
       id: user._id.toString(),
       fullName: `${user.firstname[0]}.${user.lastname}`,
-      firstname: `${user.firstname}`,
-      lastname: `${user.lastname}`,
-      username: `${user.username}`,
-      displayName: `${user.displayName}`,
-      url: `${user.url}`,
-      bio: `${user.bio}`,
-      avatar: `${user.avatar}`,
-      cover: `${user.cover}`,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      username: user.username,
+      displayName: user.displayName,
+      url: user.url,
+      bio: user.bio,
+      avatar: user.avatar,
+      cover: user.cover,
       email: user.email,
+      following: user.following,
+      followers: user.followers
     },
     ACCESS_TOKEN.secret,
     {

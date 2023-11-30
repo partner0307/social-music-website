@@ -9,7 +9,7 @@ const initialState: InitialStateType = {
 }
 
 const menuSlice = createSlice({
-    name: 'auth',
+    name: 'menu',
     initialState,
     reducers: {
         setVisible: (state, action) => {

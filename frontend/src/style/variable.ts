@@ -10,6 +10,7 @@ const variables = {
   black: '#000000',
   success: '#2BA345',
   warning: '#ebb808',
+  'warning-dark': '#ebb80888',
   error: '#c40941',
   info: '#3dfff3',
 

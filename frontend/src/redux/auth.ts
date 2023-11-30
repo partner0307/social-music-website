@@ -14,13 +14,15 @@ interface ModelType {
 
 interface InitialStateType {
     isAuthenticated: boolean
-    user: ModelType | null
+    user: ModelType | null,
+    authVisible: number
 }
 
 const token = localStorage.getItem('token');
 const initialState: InitialStateType = {
     isAuthenticated: token ? true : false,
-    user: token ? jwtDecode(token) : null
+    user: token ? jwtDecode(token) : null,
+    authVisible: 0
 }
 
 const authSlice = createSlice({
@@ -30,6 +32,9 @@ const authSlice = createSlice({
         setUser: (state, action) => {
             state.isAuthenticated = action.payload.isAuthenticated;
             state.user = action.payload.isAuthenticated ? jwtDecode(action.payload.user) : null;
+        },
+        setAuthVisible: (state, action) => {
+            state.authVisible = action.payload;
         }
     }
 });

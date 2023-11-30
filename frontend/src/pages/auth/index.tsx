@@ -2,19 +2,18 @@ import { FC, memo } from 'react'
 import { Modal } from 'antd'
 import Signin from './signin'
 import Signup from './signup'
+import { useDispatch, useSelector } from 'react-redux'
+import { authActions } from '@/redux/auth'
 
-interface AuthModalType {
-    visible: number,
-    onChange: (value: any) => any
-}
-
-const AuthModal: FC<AuthModalType> = ({ visible, onChange }) => {
+const AuthModal: FC = () => {
+  const dispatch = useDispatch();
+  const { authVisible } = useSelector((state: any) => state.auth);
   return (
-    <Modal open={visible > 0} onCancel={() => onChange(0)} footer={null} className='custom-modal'>
-        {visible === 1 && <Signin modalPropsChange={onChange} />}
-        {visible === 2 && <Signup modalPropsChange={onChange} />}
+    <Modal open={authVisible > 0} onCancel={() => dispatch(authActions.setAuthVisible(0))} footer={null} className='custom-modal'>
+        {authVisible === 1 && <Signin />}
+        {authVisible === 2 && <Signup />}
     </Modal>
   )
 }
 
-export default memo(AuthModal);
+export default AuthModal;

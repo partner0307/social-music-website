@@ -18,7 +18,7 @@ export const BannerContainer = styled.div<{ src: string }>`
     position: relative;
     ${({ src }) => src && `background: url(${src});`}
     background-size: cover;
-    background-position: top center;
+    background-position: center;
     width: 100%;
     height: 15rem;
     border-radius: 1rem;
@@ -60,7 +60,7 @@ export const StatusContainer = styled.div`
     }
 `;
 
-export const CustomButton = styled.button`
+export const CustomButton = styled.button<{ isFollowButton?: boolean, isFollowed?: boolean }>`
     display: flex;
     height: 2.5rem;
     padding: 0.75rem 2rem;
@@ -68,5 +68,22 @@ export const CustomButton = styled.button`
     align-items: center;
     gap: 1.25rem;
     border-radius: 0.5rem;
-    background: ${GV('purple')};
+    ${({ isFollowed, isFollowButton }) => isFollowed ? `background: ${GV('warning-dark')};` : isFollowButton ? `background: ${GV('warning')};` : `background: ${GV('purple')};`}
 `;
+
+export const IframeContainer = styled.div`
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+`;
+
+export const IframeInfoWrapper = styled.div`
+    background: ${GV('secondary')};
+    border-radius: ${GV('radius-sm')};
+    max-width: 15rem;
+    padding: 0.5rem;
+    width: 100%;
+    height: 16rem;
+`

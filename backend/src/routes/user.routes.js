@@ -5,7 +5,7 @@ const multer = require('multer');
 const storageEngine = multer.diskStorage({
   destination: "upload/",
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}--${file.originalname}`);
+    cb(null, `${Date.now()}.${file.mimetype.split('/')[1]}`);
   },
 });
 
@@ -21,6 +21,7 @@ router.get("/", function (req, res) {
   res.send("Hello /api/users routing works 🥂!!");
 });
 
+router.post('/index', user.index);
 router.post('/save', user.save);
 router.delete('/remove/:id', user.remove);
 router.post('/follow', user.follow);
