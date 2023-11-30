@@ -1,48 +1,5 @@
-import styled, { keyframes } from 'styled-components';
-
-import { GV } from '@/utils/style.util';
-
-export const ListContainer = styled.div`
-  cursor: pointer;
-`;
-
-export const fadeIn = keyframes`
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
-
-export const fadeOut = keyframes`
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-`;
-
-export const SidebarContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
-  padding-top: 2rem;
-  padding-left: 0.5rem;
-  max-width: 200px;
-  width: 100%;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-export const SidebarWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-`
+import { GV } from "@/utils/style.util";
+import styled from "styled-components";
 
 export const ListItemContainer = styled.div`
   display: flex;
@@ -58,7 +15,6 @@ export const ListItem = styled.div<{ isActive?: boolean }>`
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0 0.5rem 0.5rem;
-  border-radius: .5rem;
   width: 100%;
   cursor: pointer;
 

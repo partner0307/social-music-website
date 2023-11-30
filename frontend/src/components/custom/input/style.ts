@@ -43,7 +43,7 @@ export const InputBoard = styled.div<{
   ${({ bg }) => (bg ? `background: ${bg};` : `background: ${GV("input-bg")};`)}
   ${({ radius }) =>
     radius ? `border-radius: ${radius};` : `border-radius: 0.25rem;`}
-    ${({ border }) => (border ? `border-color: ${border}` : ``)}
+    ${({ border }) => (border ? `border-color: ${border}` : `border-color: ${GV('purple')};`)}
     box-shadow: 0px 0px 0px 1px rgba(160, 140, 199, 0.16), 0px 1px 2px 0px rgba(0, 0, 0, 0.06);
 `;
 
@@ -58,4 +58,6 @@ export const StyledInput = styled.input`
   font-size: ${GV('font-size-5')};
 `;
 
-export const StyledTextarea = styled(StyledInput)``;
+export const StyledTextarea = styled(StyledInput)`
+  resize: vertical;
+`;

@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 export const HeaderContainer = styled.header`
   display: flex;
-  justify-content: flex-end;
   align-items: center;
   gap: 1rem;
   padding: 2rem 2rem 1rem;
@@ -62,4 +61,37 @@ export const DropdownItemContainer = styled.div`
   &:hover {
     background: ${GV('bg')};
   }
+`;
+
+export const AuthButtonWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+
+  @media (max-width: 600px) {
+    display: none;
+  }
+`;
+
+export const MobileAuthButtonWrapper = styled.div`
+  width: 100%;
+  display: none;
+  @media (max-width: 600px) {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
+
+export const IconWrapperButton = styled.button`
+  display: none;
+  border: none;
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+
+export const AvatarImage = styled.img`
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1px solid ${GV('white')};
+  border-radius: 50%;
 `

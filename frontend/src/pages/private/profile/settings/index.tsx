@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { Flex, P, Span } from '@/components/basic'
 import Image from '@/components/basic/img'
 import { Input, Textarea } from '@/components/custom';
-import { CustomButton, DeleteButton, ProfileInfo, SubmitButton, UploadButton } from './style';
+import { AvatarContainer, CustomButton, DeleteButton, MobileContainer, MobileDeleteButton, MobileSubmitButton, ProfileInfo, SubmitButton, UploadButton } from './style';
 import { GV } from '@/utils/style.util';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Upload, notification } from 'antd';
@@ -96,29 +96,50 @@ const Settings = () => {
 
   return (
     <Flex $style={{
-      p: '2rem',
+      p: '1rem',
       w: '100%'
     }}>
       <Flex $style={{
         gap: '3rem',
-        w: '100%'
+        w: '100%',
+        queries: {
+          680: {
+            fDirection: 'column'
+          }
+        }
       }}>
         <Flex $style={{
           fDirection: 'column',
           hAlign: 'space-between',
-          gap: '1rem',
-          maxW: '14rem'
+          // gap: '10rem',
+          maxW: '14rem',
+          queries: {
+            680: {
+              maxW: '100%'
+            }
+          }
         }}>
           <Flex $style={{
             fDirection: 'column',
-            gap: '1rem'
+            gap: '1rem',
+            queries: {
+              680: {
+                fDirection: 'row',
+                gap: '2rem',
+                hAlign: 'space-between'
+              },
+              580: {
+                fDirection: 'column',
+              
+              }
+            }
           }}>
             <Flex $style={{
                 fDirection: 'column',
                 vAlign: 'center',
-                gap: '1rem'
+                gap: '.5rem',
             }}>
-                <Image src={`${avatar}`} alt='' $style={{ w: '6rem', h: '6rem', bradius: '50%' }} />
+                <AvatarContainer src={`${avatar}`} alt='' />
                 <Flex $style={{
                   gap: '1rem'
                 }}>
@@ -129,9 +150,9 @@ const Settings = () => {
             <Flex $style={{
                 fDirection: 'column',
                 vAlign: 'center',
-                gap: '1rem'
+                gap: '.5rem',
             }}>
-                <Image src={`${cover}`} alt='' $style={{ w: '100%', h: '4rem' }} />
+                <Image src={`${cover}`} alt='' $style={{ w: '100%', h: '4rem', bradius: '0' }} />
                 <Flex $style={{
                   gap: '1rem'
                 }}>
@@ -140,14 +161,22 @@ const Settings = () => {
                 </Flex>
             </Flex>
           </Flex>
-          <DeleteButton>Delete Account</DeleteButton>
+          <Flex $style={{
+            hAlign: 'center'
+          }}>
+            <DeleteButton>Delete Account</DeleteButton>
+          </Flex>
         </Flex>
         <ProfileInfo autoComplete='off' onSubmit={onSubmit}>
           <Input value={formData.username} onChange={onChange} name='username' placeholder='Username' />
           <Input value={formData.displayName} onChange={onChange} name='displayName' placeholder='Display Name' />
-          <Input value={formData.url} onChange={onChange} preSide={<Span $style={{ color: GV('gray') }}>https://gromm.com/</Span>} name='url' placeholder='Profile URL' />
+          <Input value={formData.url} onChange={onChange} preSide={<Span>https://gromm.com/</Span>} name='url' placeholder='Profile URL' />
           <Textarea value={formData.bio} onChange={onChange} name='bio' placeholder='Bio' />
           <SubmitButton type='submit'>Save</SubmitButton>
+          <MobileContainer>
+            <MobileDeleteButton>Delete Account</MobileDeleteButton>
+            <MobileSubmitButton type='submit'>Save</MobileSubmitButton>
+          </MobileContainer>
         </ProfileInfo>
       </Flex>
     </Flex>

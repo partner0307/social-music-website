@@ -2,7 +2,7 @@ import { FC, useRef, useState } from 'react';
 import { Flex, Heading, P, Span } from '@/components/basic';
 import { Textarea } from '@/components/custom';
 import { Modal, Upload, notification } from 'antd';
-import { CustomButton, UploadWrapper } from './style';
+import { CustomButton, UploadButtonWrapper, UploadWrapper } from './style';
 import Image from '@/components/basic/img';
 import { useSelector } from 'react-redux';
 import { savePost, uploadImage } from '@/actions/post';
@@ -38,6 +38,10 @@ const PostModal: FC<PostModalType> = ({ visible, onChange }) => {
             notification.warning({ message: 'Warning', description: 'Please input the correct code.' });
             return;
         }
+        if (!file) {
+            notification.warning({ message: 'Warning', description: 'Please select gif file' });
+            return;
+        }
         Modal.confirm({
             title: 'Are you sure ?',
             content: 'Do you want to save this code ?',
@@ -63,7 +67,12 @@ const PostModal: FC<PostModalType> = ({ visible, onChange }) => {
             <Flex $style={{
                 fDirection: 'column',
                 gap: '2rem',
-                p: '2rem 1rem'
+                p: '2rem 1rem',
+                queries: {
+                    480: {
+                        p: '1rem 0'
+                    }
+                }
             }}>
                 <Heading level={3} $style={{ align: 'center' }}>Add A Track To Your Profile</Heading>
                 <Flex $style={{
@@ -77,22 +86,14 @@ const PostModal: FC<PostModalType> = ({ visible, onChange }) => {
                         <P $style={{ size: '0.75rem' }}>Paste Your SoundCloud Embed Code Here</P>
                         <Textarea value={code} onChange={(e: any) => setCode(e.target.value)} name='code' placeholder='Embeded Code' />
                     </Flex>
-                    <Upload onChange={onFileSelect} beforeUpload={beforeUpload} showUploadList={false}>
+                    <Upload onChange={onFileSelect} beforeUpload={beforeUpload} showUploadList={false} className='custom-upload'>
                         <UploadWrapper>
                             {!preview ? (
-                                <Flex $style={{
-                                    fDirection: 'column',
-                                    gap: '0.5rem',
-                                    w: '100%'
-                                }}>
-                                    <P $style={{ size: '1rem', align: 'center', color: 'white' }}>Click or drag file to this area to upload</P>
-                                    <Span $style={{ size: '0.75rem', align: 'center', color: 'white' }}>
-                                        Support for a single or bulk upload. Strictly prohibited from uploading company data or other
-                                        banned files.
-                                    </Span>
-                                </Flex>
+                                <UploadButtonWrapper>
+                                    <P $style={{ size: '1rem', align: 'center', color: 'white' }}>GIF</P>
+                                </UploadButtonWrapper>
                             ) : (
-                                <Image src={`${preview}`} alt='' $style={{ w: '100%', h: '100%', bradius: '0.5rem' }} />
+                                <Image src={`${preview}`} alt='' $style={{ w: '100%', h: '100%' }} />
                             )}
                         </UploadWrapper>
                     </Upload>
