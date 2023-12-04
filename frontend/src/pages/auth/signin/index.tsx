@@ -4,10 +4,12 @@ import { AuthForm, CustomButton, CustomFont, CustomFont1, CustomLine, LetterCont
 import { Checkbox, Icon, Input } from '@/components/custom';
 import _ROUTERS from '@/constants/route.constant';
 import { GV } from '@/utils/style.util';
-import { Modal, notification } from 'antd';
+import { notification } from 'antd';
 import { google_oauth, login } from '@/actions/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from '@/redux/auth';
+
+const clientId = "150424467021-p9utredk10e35u640vf913gcig5hegoj.apps.googleusercontent.com";
 
 const Signin: FC = () => {
     const dispatch = useDispatch();
@@ -57,8 +59,23 @@ const Signin: FC = () => {
     }
 
     useEffect(() => {
-        if (authVisible)
+        if (authVisible) {
             setFormData({ email: '', password: '' });
+        }
+
+        // const handleCredentialResponse = async (response) => 
+        // {
+        //     console.log(google.accounts.id);
+            
+        // };
+        // google.accounts.id.initialize({
+        //     client_id: clientId,
+        //     callback: handleCredentialResponse,
+        // });
+        // google.accounts.id.renderButton(
+        //     document.getElementById('buttonDiv'),
+        //     { theme: 'outline', size: 'large' } // customization attributes
+        // );
     }, [authVisible]);
 
     return (
