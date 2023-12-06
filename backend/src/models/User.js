@@ -15,19 +15,19 @@ const ACCESS_TOKEN = {
 const User = mongoose.Schema;
 
 const UserSchema = new User({
-  firstname: { type: String, required: true, trim: true },
-  lastname: { type: String, required: true, trim: true },
+  firstname: { type: String, trim: true },
+  lastname: { type: String, trim: true },
   email: { type: String, required: true, trim: true },
   username: { type: String, required: true, trim: true },
   displayName: { type: String, trim: true },
   password: { type: String, trim: true },
   avatar: { type: String, required: true, trim: true },
   cover: { type: String, required: true, trim: true },
-  url: { type: String, required: true, trim: true },
   followers: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
   following: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
   posts: [{ type: mongoose.Types.ObjectId, ref: 'Post' }],
   bio: { type: String, trim: true },
+  isHost: { type: Boolean, required: true, default: false }
 });
 
 /* 
@@ -64,18 +64,17 @@ UserSchema.methods.generateAccessToken = function () {
   const accessToken = jwt.sign(
     {
       id: user._id.toString(),
-      fullName: `${user.firstname[0]}.${user.lastname}`,
       firstname: user.firstname,
       lastname: user.lastname,
       username: user.username,
       displayName: user.displayName,
-      url: user.url,
       bio: user.bio,
       avatar: user.avatar,
       cover: user.cover,
       email: user.email,
       following: user.following,
-      followers: user.followers
+      followers: user.followers,
+      isHost: user.isHost
     },
     ACCESS_TOKEN.secret,
     {

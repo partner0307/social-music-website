@@ -7,17 +7,11 @@ const _ROUTERS = {
 	// auth routes
 	_SIGNIN: 'signin/',
 	_SIGNUP: 'signup/',
-	_SIGNUP_CLIENT: 'client/',
-	_SIGNUP_TALENT: 'talent/',
-	_VERIFY_ENAIL: 'verify-email/',
-	_CATEGORY: 'talent-category/',
-
-
-
 
 	// submenu routes
 	_HOME: '/',
-	_PROFILE: '/:username'
+	_PROFILE: '/u/:username',
+	_BRACKETS: '/brackets'
 };
 
 export default _ROUTERS;

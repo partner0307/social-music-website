@@ -36,7 +36,7 @@ const MenuDrawer: FC = () => {
   const handleRoute = (router: string) => {
     if (isAuthenticated) {
       if (router.includes('username')) {
-        navigate(`/${user.url}`);
+        navigate(`/${user.username}`);
         dispatch(menuActions.setVisible(false));
       } else {
         navigate(router);

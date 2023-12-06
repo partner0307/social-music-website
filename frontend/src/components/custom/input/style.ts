@@ -8,9 +8,8 @@ export const InputContainer = styled.div`
 `;
 
 export const InputLabel = styled.span`
-  font-size: ${GV('font-size-7')};
+  font-size: ${GV('font-size-6')};
   font-weight: ${GV('weight-md')};
-  text-transform: uppercase;
   margin-bottom: 0.5rem;
 `;
 

@@ -11,7 +11,7 @@ import { Flex, Grid, P, Span } from '@/components/basic';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GV } from '@/utils/style.util';
 import { UPLOAD_URI } from '@/config';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import PostModal from '@/pages/private/post';
 import { followUser, getUser } from '@/actions/user';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,17 +27,16 @@ const ProfilePage = () => {
   const [visible, setVisible] = useState(false);
   const [model, setModel] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const username_by_url = pathname.split('/')[1] || null;
+  const username_by_url = pathname.split('/')[2] || null;
 
   useEffect(() => {
     setTimeout(async () => {
-      const result = await getUser({ url: username_by_url });
+      const result = await getUser({ username: username_by_url });
       if (result.success) {
         setModel(result.model);
         setLoading(true);
       } else {
-        notification.warning({ message: 'Warning', description: 'User not found' });
-        navigate('/');
+        navigate('/404');
       }
     }, 0);
   }, [user]);
@@ -46,7 +45,7 @@ const ProfilePage = () => {
     if (!isAuthenticated) {
       dispatch(authActions.setAuthVisible(1));
     } else {
-      const result = await followUser({ url: username_by_url, id: user.id });
+      const result = await followUser({ username: username_by_url, id: user.id });
       if (result.success) {
         localStorage.setItem('token', result.accessToken);
         notification.success({
@@ -77,7 +76,6 @@ const ProfilePage = () => {
   if (!loading) {
     return <Loading />;
   }
-
   return (
     <ProfileContainer>
       <BannerContainer src={UPLOAD_URI + model?.cover}>
@@ -111,7 +109,7 @@ const ProfilePage = () => {
                   },
                 },
               }}
-            >{`${model?.username}`}</P>
+            >{`${model?.displayName}`}</P>
             <BioContainer>
               <Span
                 $style={{
@@ -199,10 +197,10 @@ const ProfilePage = () => {
             <Span>{likeCounts}</Span>
           </Flex>
         </Grid>
-        {isAuthenticated && user?.url === username_by_url && (
+        {isAuthenticated && user?.username === username_by_url && (
           <CustomButton onClick={() => setVisible(true)}>Create Post</CustomButton>
         )}
-        {(!isAuthenticated || user?.url !== username_by_url) && (
+        {(!isAuthenticated || user?.username !== username_by_url) && (
           <CustomButton
             isFollowButton={true}
             onClick={() => onFollowToggle()}
@@ -227,9 +225,7 @@ const ProfilePage = () => {
         <IframeContainer>
           {model?.posts &&
             model?.posts
-              .sort(function (a: any, b: any) {
-                return b.createdAt - a.createdAt;
-              })
+              .sort((a: any, b: any) => b.createdAt.localeCompare(a.createdAt))
               .map((item: any, key: number) => (
                 <div
                   dangerouslySetInnerHTML={{ __html: item.code }}

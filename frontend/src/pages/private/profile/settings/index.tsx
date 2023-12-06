@@ -24,7 +24,6 @@ import { useNavigate } from 'react-router-dom';
 interface FormDataType {
   username: string;
   displayName: string;
-  url: string;
   bio: string;
 }
 
@@ -35,7 +34,6 @@ const Settings = () => {
   const [formData, setFormData] = useState<FormDataType>({
     username: user ? user.username : '',
     displayName: user ? user.displayName : '',
-    url: user ? user.url : '',
     bio: user ? user.bio : '',
   });
   const [avatar, setAvatar] = useState<string | ArrayBuffer | null>(
@@ -111,10 +109,12 @@ const Settings = () => {
             message: 'Success',
             description: 'Updated successfully',
           });
+          if (user.username !== result.model.username) {
+            window.location.href = `/u/${result.model.username}`;
+          }
           dispatch(
             authActions.setUser({ isAuthenticated: true, user: result.accessToken })
           );
-          navigate(result.model.url);
         }
       },
     });
@@ -228,26 +228,23 @@ const Settings = () => {
         </Flex>
         <ProfileInfo autoComplete="off" onSubmit={onSubmit}>
           <Input
-            value={formData.username}
-            onChange={onChange}
-            name="username"
-            placeholder="Username"
-          />
-          <Input
+            label="Display Name*"
             value={formData.displayName}
             onChange={onChange}
             name="displayName"
             placeholder="Display Name"
           />
           <Input
-            value={formData.url}
+            label="Profile URL*"
+            value={formData.username}
             onChange={onChange}
             gap="0"
             preSide={<Span>https://gromm.com/</Span>}
-            name="url"
+            name="username"
             placeholder="Profile URL"
           />
           <Textarea
+            label="Bio"
             value={formData.bio}
             onChange={onChange}
             name="bio"
@@ -255,7 +252,7 @@ const Settings = () => {
           />
           <SubmitButton type="submit">Save</SubmitButton>
           <MobileContainer>
-            {/* <MobileDeleteButton>Delete Account</MobileDeleteButton> */}
+            {/* <MobileDeleteButton type="button">Delete Account</MobileDeleteButton> */}
             <MobileSubmitButton type="submit">Save</MobileSubmitButton>
           </MobileContainer>
         </ProfileInfo>

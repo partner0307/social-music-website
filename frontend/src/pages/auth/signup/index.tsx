@@ -27,16 +27,6 @@ const Signup: FC = () => {
     const onSubmit = (e: any) => {
         e.preventDefault();
 
-        if (formData.firstname === '') {
-            notification.warning({ message: 'Warning', description: 'Please input first name.' });
-            return;
-        }
-
-        if (formData.lastname === '') {
-            notification.warning({ message: 'Warning', description: 'Please input last name.' });
-            return;
-        }
-
         if (formData.username === '') {
             notification.warning({ message: 'Warning', description: 'Please input username.' });
             return;
@@ -98,22 +88,24 @@ const Signup: FC = () => {
     }
 
     useEffect(() => {
-        if (authVisible)
+        if (authVisible) {
             setFormData({ firstname: '', lastname: '', username: '', email: '', password: '', confirm: '' });
+            setAgree(false);
+        }
     }, [authVisible]);
 
     return (
         <SignupContainer>
             <AuthForm autoComplete='off'>
                 <Flex $style={{ fDirection: 'column', gap: '1rem' }}>
+                    <Input value={username} name='username' placeholder='Username' preSide={<Icon icon='User' />} onChange={onChange} />
                     <Input value={firstname} name='firstname' placeholder='First Name' preSide={<Icon icon='User' />} onChange={onChange} />
                     <Input value={lastname} name='lastname' placeholder='Last Name' preSide={<Icon icon='User' />} onChange={onChange} />
-                    <Input value={username} name='username' placeholder='Username' preSide={<Icon icon='User' />} onChange={onChange} />
                     <Input value={email} type='email' name='email' placeholder='Email Address' preSide={<Icon icon='Email' />} onChange={onChange} />
                     <Input type='password' value={password} name='password' placeholder='Password' preSide={<Icon icon='Lock' />} onChange={onChange} />
                     <Input type='password' value={confirm} name='confirm' placeholder='Confirm Password' preSide={<Icon icon='Lock' />} onChange={onChange} />
                     <Flex $style={{ fDirection: 'colun' }}>
-                        <Checkbox isChecked={isAgree} onChange={() => setAgree(!isAgree)} label={<P $style={{ size: GV('font-size-6') }}>I have read <Link to='#' $style={{ color: GV('purple') }}>terms and conditions</Link>  and <Link to='#' $style={{ color: GV('purple') }}>terms of clients</Link>  and I agree with the terms.</P>} />
+                        <Checkbox isChecked={isAgree} onChange={() => setAgree(!isAgree)} label={<Flex $style={{ flex: '1' }}><P $style={{ size: GV('font-size-6') }}>I have read <Link to='#' $style={{ color: GV('purple') }}>terms and conditions</Link>  and <Link to='#' $style={{ color: GV('purple') }}>terms of clients</Link>  and I agree with the terms.</P></Flex>} />
                     </Flex>
                 </Flex>
                 <SubmitButton onClick={onSubmit} type='submit'>Sign up</SubmitButton>
