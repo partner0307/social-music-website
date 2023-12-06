@@ -18,20 +18,21 @@ import { notification } from 'antd';
 import { GV } from '@/utils/style.util';
 
 const Sidebar = () => {
+  const navigate = useNavigate();
   const { isAuthenticated, user } = useSelector((state: any) => state.auth);
   const { hash, pathname, search } = useLocation();
 
   const handleRoute = (router: string) => {
     if (isAuthenticated) {
       if (router.includes('username')) {
-        window.location.href = `/${user.url}`;
+        navigate(`/u/${user.username}`);
       } else {
-        window.location.href = router;
+        navigate(router);
       }
     } else if (router !== '/' && !isAuthenticated) {
       notification.warning({ message: 'Warning', description: 'Please login!' });
     } else if (router === '/' && !isAuthenticated) {
-      window.location.href = router;
+      navigate(router);
     }
   };
 
@@ -71,7 +72,7 @@ const Sidebar = () => {
                     <ListItem
                       isActive={
                         pathname === data.router ||
-                        (data.router !== '/' && pathname.includes(user.url))
+                        (data.router !== '/' && pathname.includes('/u/'))
                       }
                       onClick={() => handleRoute(data.router)}
                     >

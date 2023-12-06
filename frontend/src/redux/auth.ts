@@ -8,7 +8,6 @@ interface ModelType {
     avatar?: string,
     cover?: string,
     bio?: string,
-    url?: string,
     id: string,
 }
 

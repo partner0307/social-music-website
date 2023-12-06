@@ -31,7 +31,7 @@ module.exports.signup = (req, res, next) => {
             model.username = username,
             model.avatar = "avatar.png",
             model.cover = "cover.png",
-            model.displayName = '',
+            model.displayName = username,
             model.url = username,
             model.bio = "",
             model.save().then(async err => {
