@@ -102,6 +102,15 @@ const Settings = () => {
       title: 'Are you sure ?',
       content: 'Do you want to save this data ?',
       async onOk() {
+        if (!formData.displayName) {
+          notification.warning({ message: 'Warning', description: 'Please input display name' });
+          return;
+        }
+        if (!formData.username) {
+          notification.warning({ message: 'Warning', description: 'Please input profile url' });
+          return;
+        }
+
         const result = await updateProfile({ ...formData, id: user.id });
         if (result.success) {
           localStorage.setItem('token', result.accessToken);
@@ -115,6 +124,8 @@ const Settings = () => {
           dispatch(
             authActions.setUser({ isAuthenticated: true, user: result.accessToken })
           );
+        } else {
+          notification.warning({ message: 'Warning', description: result.message });
         }
       },
     });
