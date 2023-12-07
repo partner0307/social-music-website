@@ -14,16 +14,22 @@ module.exports.index = async (req, res) => {
 };
 
 module.exports.save = async (req, res) => {
-    User.findById(req.body.id).then(model => {
-        model.displayName = req.body.displayName;
-        model.username = req.body.username;
-        model.bio = req.body.bio;
-        model.save().then(err => {
-            const accessToken = model.generateAccessToken();
-
-            res.json({ success: true, model, accessToken });
-        })
-    })
+    User.findOne({ username: req.body.username }).then(exist_user => {
+        if (exist_user) {
+            res.json({ success: false, message: 'Username already exists!' });
+            return;
+        }
+        User.findById(req.body.id).then(model => {
+            model.displayName = req.body.displayName;
+            model.username = req.body.username;
+            model.bio = req.body.bio;
+            model.save().then(err => {
+                const accessToken = model.generateAccessToken();
+    
+                res.json({ success: true, model, accessToken });
+            });
+        });
+    });
 };
 
 module.exports.remove = async (req, res) => {
