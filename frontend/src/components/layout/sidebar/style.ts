@@ -88,12 +88,15 @@ export const NestedItemList = styled.div`
   width: 100%;
 `;
 
-export const NestedItem = styled.div`
+export const NestedItem = styled.div<{ isActive?: boolean, isLast?: boolean }>`
   display: flex;
   align-items: center;
   gap: .5rem;
   padding: 0.5rem 0 0.5rem 1rem;
   cursor: pointer;
+
+  ${({ isActive }) => isActive ? `background: ${GV('purple')};` : `background: ${GV('gray')};`}
+  ${({ isLast }) => isLast ? `border-radius: 0 0 0.5rem 0.5rem;` : ''}
 
   &:hover {
     background: ${GV('purple')};

@@ -13,8 +13,12 @@ const variables = {
   'warning-dark': '#ebb80888',
   error: '#c40941',
   info: '#3dfff3',
+  pink: '#EF443B',
+  'pink-400': '#FFC6C3',
+  'purple-400': '#D5DBFF',
 
   'gray-100': '#94979E',
+  'gray-200': '#1C1F25',
 
   'red-shadow': '#8264be',
   'purple-shadow': '#dc6062',

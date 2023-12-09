@@ -374,6 +374,40 @@ const GlobalStyle = createGlobalStyle`
 		background: ${GV('gray')};
 		backdrop-filter: blur(3px);
 	}
+	.custom-picker {
+		background: ${GV('gray')} !important;
+		border-color: ${GV('purple')} !important;
+		backdrop-filter: blur(3px);
+	}
+	.custom-picker .ant-picker-input input, .custom-picker .ant-picker-input span {
+		color: ${GV('white')} !important;
+		padding: 0.125rem;
+	}
+	.ck.ck-editor__main>.ck-editor__editable {
+		background: ${GV('gray')};
+		border-color: ${GV('purple')} !important;
+		border-radius: 0;
+	}
+	.ck.ck-toolbar.ck-toolbar_grouping {
+		background: ${GV('gray')};
+		border-color: ${GV('purple')};
+	}
+
+	/* .ck-reset_all :not(.ck-reset_all-excluded *), .ck.ck-reset_all {
+		color: ${GV('white')} !important;
+		&:hover {
+			color: ${GV('black')} !important;
+		}
+	} */
+	.ant-radio-group .ant-radio-button-wrapper {
+		background: var(--gray) !important;
+		border-color: var(--purple) !important;
+		color: var(--white);
+	}
+	.ant-radio-group .ant-radio-button-wrapper-checked {
+		background: var(--purple) !important;
+		border-color: var(--purple) !important;
+	}
 `;
 
 export default GlobalStyle;

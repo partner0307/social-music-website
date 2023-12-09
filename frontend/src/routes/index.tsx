@@ -7,6 +7,11 @@ import PublicPage from '@/pages/public';
 import HomePage from '@/pages/public/home';
 import ProfilePage from '@/pages/public/profile';
 import { Link } from 'react-router-dom';
+import Brackets from '@/pages/public/brackets';
+import Tournament from '@/pages/public/tournament';
+import Submission from '@/components/page/public/tournament/submission';
+import Qualify from '@/components/page/public/tournament/qualify';
+import Winner from '@/components/page/public/tournament/winner';
 
 const routers = createBrowserRouter([
   {
@@ -20,6 +25,28 @@ const routers = createBrowserRouter([
       {
         path: _ROUTERS._PROFILE,
         element: <ProfilePage />,
+      },
+      {
+        path: _ROUTERS._BRACKETS,
+        element: <Brackets />
+      },
+      {
+        path: _ROUTERS._TOURNAMENT,
+        element: <Tournament />,
+        children: [
+          {
+            path: _ROUTERS._TOURNAMENT,
+            element: <Submission />
+          },
+          {
+            path: _ROUTERS._QUALIFY,
+            element: <Qualify />
+          },
+          {
+            path: _ROUTERS._WINNER,
+            element: <Winner />
+          }
+        ]
       },
       {
         path: '*',

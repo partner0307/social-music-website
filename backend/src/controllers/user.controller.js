@@ -14,12 +14,14 @@ module.exports.index = async (req, res) => {
 };
 
 module.exports.save = async (req, res) => {
-    User.findOne({ username: req.body.username }).then(exist_user => {
-        if (exist_user) {
+    User.find({ username: req.body.username }).then(exist_user => {
+        if (exist_user.length > 1) {
             res.json({ success: false, message: 'Username already exists!' });
             return;
         }
         User.findById(req.body.id).then(model => {
+            model.firstname = req.body.firstname ? req.body.firstname : model.firstname;
+            model.lastname = req.body.lastname ? req.body.lastname : model.lastname;
             model.displayName = req.body.displayName;
             model.username = req.body.username;
             model.bio = req.body.bio;
@@ -86,7 +88,7 @@ module.exports.upload = async (req, res) => {
         model.save().then(err => {
             res.json({ success: true, accessToken: model.generateAccessToken() });
         });
-    })
+    });
 }
 
 module.exports.remove_image = async (req, res) => {

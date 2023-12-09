@@ -11,7 +11,10 @@ const _ROUTERS = {
 	// submenu routes
 	_HOME: '/',
 	_PROFILE: '/u/:username',
-	_BRACKETS: '/brackets'
+	_BRACKETS: '/brackets',
+	_TOURNAMENT: '/:bracket_url',
+	_QUALIFY: 'qualify/',
+	_WINNER: 'winner/'
 };
 
 export default _ROUTERS;

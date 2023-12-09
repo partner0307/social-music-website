@@ -41,7 +41,7 @@ const MenuData: any = [
         {
           icon: FaUserAlt,
           text: 'Community',
-          router: '#'
+          router: _ROUTERS._BRACKETS
         },
       ]
     },
