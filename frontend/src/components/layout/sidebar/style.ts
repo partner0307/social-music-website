@@ -25,7 +25,7 @@ export const fadeOut = keyframes`
 `;
 
 export const SidebarContainer = styled.div`
-  position: 'fixed';
+  position: fixed;
   top: 0;
   left: 0;
   display: flex;

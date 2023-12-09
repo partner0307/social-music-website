@@ -4,7 +4,7 @@ const User = require('../models/User');
 const useRandomGenerator = require('../service/randomGenerator');
 
 module.exports.index = (req, res) => {
-    Bracket.find().sort({ createdAt: -1 }).populate('max_player').then(model => {
+    Bracket.find().sort({ createdAt: -1 }).populate('posts').then(model => {
         res.json({ success: true, model });
     });
 }
@@ -28,7 +28,7 @@ module.exports.save = (req, res) => {
         model.url = url;
         model.banner = 'banner.png';
         model.save().then(err => {
-            model.populate('max_player', err => {
+            model.populate('posts', err => {
                 res.json({ success: true, model });
             })
         });
@@ -50,7 +50,7 @@ module.exports.upload_image = (req, res) => {
         }
         model.banner = req.files[0].filename;
         model.save().then(err => {
-            model.populate('max_player', err => {
+            model.populate('posts', err => {
                 res.json({ success: true, model });
             });
         });
@@ -63,13 +63,13 @@ module.exports.remove_image = async (req, res) => {
             fs.unlink(`upload/${model.banner}`, err => {
                 model.banner = 'banner.png';
                 model.save().then(err => {
-                    model.populate('max_player', err => {
+                    model.populate('posts', err => {
                         res.json({ success: true, model });
                     });
                 });
             });
         } else {
-            model.populate('max_player', err => {
+            model.populate('posts', err => {
                 res.json({ success: true, model });
             });
         }
@@ -77,7 +77,10 @@ module.exports.remove_image = async (req, res) => {
 }
 
 module.exports.getByUrl = async (req, res) => {
-    Bracket.findOne({ url: req.params.url }).populate('max_player').then(model => {
-        res.json({ success: true, model });
+    Bracket.findOne({ url: req.params.url }).populate('posts').then(model => {
+        if (model)
+            res.json({ success: true, model });
+        else
+            res.json({ success: false });
     });
 }

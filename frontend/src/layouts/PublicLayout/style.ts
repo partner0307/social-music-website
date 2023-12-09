@@ -19,4 +19,5 @@ export const MainWrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
+    margin-left: 200px;
 `
