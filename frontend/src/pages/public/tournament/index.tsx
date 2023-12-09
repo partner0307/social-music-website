@@ -2,18 +2,38 @@ import React, { useEffect, useState } from 'react'
 import { Flex, Span } from '@/components/basic';
 import { EnterButton, FeaturedTrackContainer, ProgressContainer, ProgressLine, StepContainer, TournamentContainer } from './style'
 import { GV } from '@/utils/style.util'
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import _ROUTERS from '@/constants/route.constant';
+import { getBracketByUrl } from '@/actions/bracket';
+import Loading from '@/components/custom/loading';
 
 const Tournament = () => {
   const navigate = useNavigate();
+  const { hash, pathname, search } = useLocation();
   const [tabIndex, setTabIndex] = useState(1);
+  const [bracket, setBracket] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const url = pathname.split('/')[1];
 
   const onEnterBracket = () => {
     setTabIndex(tabIndex + 1);
     const router = tabIndex === 1 ? _ROUTERS._QUALIFY : tabIndex === 2 ? _ROUTERS._WINNER : _ROUTERS._TOURNAMENT;
     navigate(router);
   }
+
+  useEffect(() => {
+    setTimeout(async () => {
+      const result = await getBracketByUrl(url);
+      if (result.success) {
+        setBracket(result.model);
+        setLoading(false);
+      } else {
+        navigate('/404');
+      }
+    }, 0);
+  }, [url]);
+
+  if (loading) return <Loading />
 
   return (
     <TournamentContainer>
@@ -27,7 +47,7 @@ const Tournament = () => {
           vAlign: 'center',
           gap: '2rem'
         }}>
-          {tabIndex < 3 && <EnterButton onClick={() => onEnterBracket()}>{tabIndex === 1 ? 'Enter Bracket' : 'Voting in Progress'}</EnterButton>}
+          {tabIndex < 3 && <EnterButton onClick={() => onEnterBracket()}>{tabIndex === 1 ? `Enter Bracket (${bracket.posts.length}/${bracket.max_player})` : `Voting in Progress`}</EnterButton>}
           <ProgressContainer>
             <ProgressLine />
             <Flex $style={{
