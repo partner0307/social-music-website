@@ -41,8 +41,6 @@ const Dropdown: React.FC<DropdownPropsType> = ({
 				const mouseEnterHandle = () => {
 					setIsDropdown(true);
 				}
-
-				
 			}
 		} else {
 			const windowClick = (e: any) => {

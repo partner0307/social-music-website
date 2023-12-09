@@ -8,8 +8,7 @@ export const ProfileContainer = styled.div`
     gap: 1rem;
     width: 100%;
     height: 100%;
-    padding-left: 2rem;
-    padding-right: 2rem;
+    padding: 0 2rem;
 `;
 
 export const BannerContainer = styled.div<{ src: string }>`

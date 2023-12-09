@@ -9,6 +9,7 @@ export interface InlineTextPropsType {
   offset?: string;
   align?: "left" | "center" | "right";
   decorator?: "overline" | "line-through" | "underline";
+  transform?: "uppercase" | "lowercase" | "capitalize";
 }
 
 type QueryType = { [key: string]: Partial<InlineTextPropsType> };
@@ -25,6 +26,7 @@ const setStyle = ({
   offset,
   align,
   decorator,
+  transform
 }: Partial<InlineTextPropsType>) => {
   return `
 		${color ? `color:					var(--${color});` : ``}
@@ -34,6 +36,7 @@ const setStyle = ({
 		${align ? `text-align:				${align};` : ``}
 		${offset ? `text-underline-offset:	${offset};` : ``}
 		${decorator ? `text-decoration:			${decorator};` : ``}
+    ${transform ? `text-transform:   ${transform}` : ``}
 	`;
 };
 

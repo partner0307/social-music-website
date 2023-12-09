@@ -8,12 +8,12 @@ import { authActions } from "@/redux/auth";
 import { DiAptana } from "react-icons/di";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import AuthModal from "@/pages/auth";
-import SettingModal from "@/pages/private/profile";
 import { UPLOAD_URI } from "@/config";
 import { Icon } from "@/components/custom";
 import Logo from '@/assets/img/logo.png';
 import MenuDrawer from "./elements/drawer";
 import { menuActions } from "@/redux/menu";
+import SettingModal from "@/components/page/header";
 
 const Header = () => {
     const navigate = useNavigate();

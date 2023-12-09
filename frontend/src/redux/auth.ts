@@ -2,12 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 import { jwtDecode } from 'jwt-decode';
 
 interface ModelType {
-    fullName?: string,
+    firstname?: string,
+    lastname?: string,
     username?: string,
     email?: string,
     avatar?: string,
     cover?: string,
     bio?: string,
+    isHost?: boolean,
     id: string,
 }
 
