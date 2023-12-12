@@ -25,8 +25,8 @@ export const SubmitButton = styled.button`
     border-radius: ${GV('radius-xs')};
     
     /* background: ${GV('success')}; */
-    @media (max-width: 680px) {
-        display: none;
+    @media (max-width: 768px) {
+        width: 100%;
     }
 `;
 

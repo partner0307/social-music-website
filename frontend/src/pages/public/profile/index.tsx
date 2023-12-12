@@ -227,11 +227,7 @@ const ProfilePage = () => {
             model?.posts
               .sort((a: any, b: any) => b.createdAt.localeCompare(a.createdAt))
               .map((item: any, key: number) => (
-                <div
-                  dangerouslySetInnerHTML={{ __html: item.code }}
-                  key={key}
-                  style={{ position: 'relative', width: '100%' }}
-                ></div>
+                <iframe width="80%" height="130" scrolling="no" frameBorder="no" allow="autoplay" src={`https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${item.track_id}&color=%23536bf2&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=false&show_playcount=false&sharing=false&buying=false&download=false`} key={key}></iframe>
               ))}
         </IframeContainer>
       </Flex>

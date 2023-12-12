@@ -3,13 +3,17 @@ import styled from "styled-components";
 
 export const TournamentContainer = styled.div`
     display: flex;
+    flex: 1;
     gap: 1rem;
     padding: 0 2rem;
-    width: 100%;
 `;
 
 export const FeaturedTrackContainer = styled.div`
     width: 300px;
+
+    @media (max-width: 1200px) {
+        display: none;
+    }
 `
 
 export const EnterButton = styled.button`
@@ -21,6 +25,10 @@ export const EnterButton = styled.button`
     color: var(--white);
     text-transform: uppercase;
     border-radius: ${GV('radius-xs')};
+
+    @media (max-width: 768px) {
+        max-width: 100%;
+    }
 `;
 
 export const ProgressContainer = styled.div`
@@ -42,6 +50,11 @@ export const StepContainer = styled.div<{ isActive?: boolean }>`
     height: 3rem;
     border-radius: 50%;
     ${({ isActive }) => isActive ? `background: var(--success);` : `background: var(--purple);`}
+
+    @media (max-width: 425px) {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
 `;
 
 export const ProgressLine = styled.div`
@@ -52,4 +65,16 @@ export const ProgressLine = styled.div`
     height: 4px;
     background: var(--purple);
     z-index: -1;
+
+    @media (max-width: 890px) {
+        top: 40%;
+    }
+    
+    @media (max-width: 768px) {
+        top: 50%;
+    }
+
+    @media (max-width: 425px) {
+        top: 40%;
+    }
 `;

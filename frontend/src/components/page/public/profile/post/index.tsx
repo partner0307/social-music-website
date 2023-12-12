@@ -21,8 +21,8 @@ const PostModal: FC<PostModalType> = ({ visible, onChange, onPostsChange }) => {
   const [code, setCode] = useState('');
 
   const onSave = () => {
-    const match: any = code.match(/\/(\d+)/);
-    if (!match) {
+    const match: any = code.match(/tracks\/(\d+)/);
+    if (!match || !code.includes('soundcloud')) {
       notification.warning({
         message: 'Warning',
         description: 'Please input the correct code.',
@@ -53,6 +53,7 @@ const PostModal: FC<PostModalType> = ({ visible, onChange, onPostsChange }) => {
   const refreshModal = () => {
     setCode('');
     onChange(false);
+    
   };
 
   return (

@@ -45,7 +45,12 @@ const Tournament = () => {
       }}>
         <Flex $style={{
           vAlign: 'center',
-          gap: '2rem'
+          gap: '2rem',
+          queries: {
+            768: {
+              fDirection: 'column'
+            }
+          }
         }}>
           {tabIndex < 3 && <EnterButton onClick={() => onEnterBracket()}>{tabIndex === 1 ? `Enter Bracket (${bracket.posts.length}/${bracket.max_player})` : `Voting in Progress`}</EnterButton>}
           <ProgressContainer>
@@ -54,27 +59,72 @@ const Tournament = () => {
               fDirection: 'column',
               gap: '0.5rem'
             }}>
-              <Span $style={{ size: GV('font-size-6') }}>00/00/00</Span>
+              <Span $style={{
+                size: GV('font-size-6'),
+                queries: {
+                  768: {
+                    size: GV('font-size-7')
+                  }
+                }
+              }}>00/00/00</Span>
               <StepContainer isActive={tabIndex === 1}>1</StepContainer>
-              <Span $style={{ size: GV('font-size-6'), transform: 'uppercase' }}>SUBMISSION PERIOD</Span>
+              <Span $style={{
+                size: GV('font-size-6'),
+                align: 'left',
+                queries: {
+                  768: {
+                    size: GV('font-size-7')
+                  }
+                },
+                transform: 'uppercase' }}>SUBMISSION PERIOD</Span>
             </Flex>
             <Flex $style={{
               fDirection: 'column',
               vAlign: 'center',
               gap: '0.5rem',
             }}>
-              <Span $style={{ size: GV('font-size-6') }}>00/00/00</Span>
+              <Span $style={{
+                size: GV('font-size-6'),
+                queries: {
+                  768: {
+                    size: GV('font-size-7')
+                  }
+                }
+              }}>00/00/00</Span>
               <StepContainer isActive={tabIndex === 2}>2</StepContainer>
-              <Span $style={{ size: GV('font-size-6'), transform: 'uppercase' }}>QUALIFY / VOTING</Span>
+              <Span $style={{
+                size: GV('font-size-6'),
+                align: 'center',
+                queries: {
+                  768: {
+                    size: GV('font-size-7')
+                  }
+                },
+                transform: 'uppercase' }}>QUALIFY / VOTING</Span>
             </Flex>
             <Flex $style={{
               fDirection: 'column',
               vAlign: 'flex-end',
               gap: '0.5rem'
             }}>
-              <Span $style={{ size: GV('font-size-6') }}>00/00/00</Span>
+              <Span $style={{
+                size: GV('font-size-6'),
+                queries: {
+                  768: {
+                    size: GV('font-size-7')
+                  }
+                }
+              }}>00/00/00</Span>
               <StepContainer isActive={tabIndex === 3}>3</StepContainer>
-              <Span $style={{ size: GV('font-size-6'), transform: 'uppercase' }}>SUBMISSION PERIOD</Span>
+              <Span $style={{
+                size: GV('font-size-6'),
+                align: 'right',
+                queries: {
+                  768: {
+                    size: GV('font-size-7')
+                  }
+                },
+                transform: 'uppercase' }}>SUBMISSION PERIOD</Span>
             </Flex>
           </ProgressContainer>
         </Flex>

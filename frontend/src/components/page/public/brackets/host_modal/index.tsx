@@ -1,5 +1,7 @@
-import { DatePicker, Modal, Upload, notification } from 'antd';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import React, { FC, useEffect, useState } from 'react';
+import { DatePicker, Modal, Upload, notification } from 'antd';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { LabelContainer, HostModalWrapper, SubmitButton, UploadButton, BannerContainer, BannerOverlay } from './style';
@@ -9,8 +11,10 @@ import { Icon, Input } from '@/components/custom';
 import Image from '@/components/basic/img';
 import { UPLOAD_URI } from '@/config';
 import { useDispatch, useSelector } from 'react-redux';
-import { hostBracket, removeImage, uploadImage } from '@/actions/bracket';
+import { hostBracket, uploadImage } from '@/actions/bracket';
 import { bracketActions } from '@/redux/bracket';
+
+dayjs.extend(customParseFormat);
 
 const HostModal = () => {
     const dispatch = useDispatch();
@@ -19,7 +23,7 @@ const HostModal = () => {
     const [formData, setFormData] = useState({
         title: bracket ? bracket.title : '',
         start_date: bracket ? bracket.start_date : '',
-        voting_date: bracket ? bracket.voting_date : '',
+        vote_date: bracket ? bracket.vote_date : '',
         details: bracket ? bracket.details : '',
         prizes: bracket ? bracket.prizes : '',
         rules: bracket ? bracket.rules : '',
@@ -38,39 +42,34 @@ const HostModal = () => {
     };
     
     const handleImageRemove = async () => {
-        const result = await removeImage({ id: user.id });
-        if (result.success) {
-            localStorage.setItem('token', result.accessToken);
-            notification.success({ message: 'Success', description: 'Removed successfully' });
-            setBanner(`${UPLOAD_URI}/banner.png`);
-        } else {
-            notification.warning({ message: 'Warning', description: 'Oops, it has some problem.' });
-        }
+        setFile('');
+        setBanner(`${UPLOAD_URI}/banner.png`);
     };
 
     const onSubmit = (e: any) => {
         e.preventDefault();
 
+        if (formData.title === '') {
+            notification.warning({ message: 'Warning', description: 'Please input title' });
+            return;
+        }
+        if (formData.start_date === '') {
+            notification.warning({ message: 'Warning', description: 'Please input start date' });
+            return ;
+        }
+        if (formData.vote_date === '') {
+            notification.warning({ message: 'Warning', description: 'Please input vote date' });
+            return;
+        }
+        if (formData.max_player < 2) {
+            notification.warning({ message: 'Warning', description: 'Please input max player number correctly' });
+            return;
+        }
+
         Modal.confirm({
             title: 'Are you sure ?',
             content: 'Do you want to save this data ?',
             async onOk() {
-                if (formData.title === '') {
-                    notification.warning({ message: 'Warning', description: 'Please input title' });
-                    return;
-                }
-                if (formData.start_date === '') {
-                    notification.warning({ message: 'Warning', description: 'Please input start date' });
-                    return ;
-                }
-                if (formData.voting_date === '') {
-                    notification.warning({ message: 'Warning', description: 'Please input vote date' });
-                    return;
-                }
-                if (formData.max_player < 2) {
-                    notification.warning({ message: 'Warning', description: 'Please input max player number correctly' });
-                    return;
-                }
                 const result = await hostBracket({ ...formData, id: bracket ? bracket.id : null, user: user ? user.id : null });
                 if (result.success) {
                     notification.success({ message: 'Success', description: 'Saved successfully' });
@@ -94,7 +93,19 @@ const HostModal = () => {
         })
     }
     
-    useEffect(() => {setFile('')}, []);
+    useEffect(() => {
+        setFile('');
+        setBanner(`${UPLOAD_URI}/banner.png`);
+        setFormData({
+            title: bracket ? bracket.title : '',
+            start_date: bracket ? bracket.start_date : '',
+            vote_date: bracket ? bracket.vote_date : '',
+            details: bracket ? bracket.details : '',
+            prizes: bracket ? bracket.prizes : '',
+            rules: bracket ? bracket.rules : '',
+            max_player: bracket ? bracket.max_player : 0
+        })
+    }, []);
 
     return (
         <Modal
@@ -127,15 +138,36 @@ const HostModal = () => {
                         </UploadButton>
                     </BannerOverlay>
                 </BannerContainer>
-                <Flex $style={{ vAlign: 'center', gap: '1rem' }}>
+                <Flex $style={{
+                    vAlign: 'center',
+                    gap: '1rem',
+                    w: '100%',
+                    queries: {
+                        768: {
+                            fDirection: 'column'
+                        }
+                    }
+                }}>
                     <Input label="Title" value={formData.title} onChange={(e: any) => setFormData({ ...formData, title: e.target.value })} />
                     <LabelContainer>
                         <P $style={{ size: GV('font-size-6') }}>Start Date</P>
-                        <DatePicker showTime onChange={(value, dateString) => setFormData({ ...formData, start_date: dateString })} className='custom-picker' />
+                        <DatePicker
+                            value={formData.start_date ? dayjs(formData.start_date, 'YYYY-MM-DD HH:mm:ss') : null}
+                            showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}
+                            format='YYYY-MM-DD HH:mm:ss'
+                            onChange={(value, dateString) => setFormData({ ...formData, start_date: dateString })}
+                            className='custom-picker'
+                        />
                     </LabelContainer>
                     <LabelContainer>
                         <P $style={{ size: GV('font-size-6') }}>Voting Date</P>
-                        <DatePicker showTime onChange={(value, dateString) => setFormData({ ...formData, voting_date: dateString })} className='custom-picker' />
+                        <DatePicker
+                            value={formData.vote_date ? dayjs(formData.vote_date, 'YYYY-MM-DD HH:mm:ss') : null}
+                            showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}
+                            format='YYYY-MM-DD HH:mm:ss'
+                            onChange={(value, dateString) => setFormData({ ...formData, vote_date: dateString })}
+                            className='custom-picker'
+                        />
                     </LabelContainer>
                     <Input label="Max Players" type='number' value={formData.max_player} onChange={(e: any) => setFormData({ ...formData, max_player: e.target.value })} />
                 </Flex>

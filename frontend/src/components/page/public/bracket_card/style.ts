@@ -10,6 +10,10 @@ export const CardContainer = styled.div`
     border: 1px solid ${GV('purple')};
     border-radius: 0.5rem;
     transition: all .3s ease;
+
+    @media (max-width: 1920px) {
+        max-width: 400px;
+    }
 `;
 
 export const CardTitle = styled.div`

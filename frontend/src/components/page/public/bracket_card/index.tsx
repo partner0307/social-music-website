@@ -29,9 +29,15 @@ const BracketCard: FC<BracketCardType> = ({ model }) => {
                     <Span $style={{ size: '0.75rem', weight: '700' }}>{model.max_player}</Span>
                 </Flex>
             </Flex>
-            <Flex $style={{ fDirection: 'column', gap: '0.25rem' }}>
-                <Span $style={{ size: '0.75rem' }}>Winners announced</Span>
-                <Span $style={{ size: '0.75rem', weight: '700' }}>{moment(model.vote_date).format('YYYY-MM-DD HH:mm:ss')}</Span>
+            <Flex $style={{ vAlign: 'center', gap: '2rem' }}>
+                <Flex $style={{ fDirection: 'column', gap: '0.25rem' }}>
+                    <Span $style={{ size: '0.75rem' }}>Winners announced</Span>
+                    <Span $style={{ size: '0.75rem', weight: '700' }}>{moment(model.vote_date).format('YYYY-MM-DD HH:mm:ss')}</Span>
+                </Flex>
+                <Flex $style={{ fDirection: 'column', gap: '0.25rem' }}>
+                    <Span $style={{ size: '0.75rem' }}>Owner</Span>
+                    <Span $style={{ size: '0.75rem', weight: '700' }}>{model.creator.username}</Span>
+                </Flex>
             </Flex>
         </CardContent>
         <CardAction>
