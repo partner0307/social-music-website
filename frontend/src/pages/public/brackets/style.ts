@@ -19,6 +19,10 @@ export const CustomButton = styled.button`
     gap: 1.25rem;
     border-radius: 0.5rem;
     background: ${GV('purple')};
+
+    @media (max-width: 768px) {
+        padding: 0.75rem 1.5rem;
+    }
 `;
 
 export const DropdownContainer = styled.div`

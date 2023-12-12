@@ -20,4 +20,8 @@ export const MainWrapper = styled.div`
     flex-direction: column;
     width: 100%;
     margin-left: 200px;
+
+    @media (max-width: 768px) {
+        margin: 0;
+    }
 `

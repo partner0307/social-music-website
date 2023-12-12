@@ -37,6 +37,14 @@ export const TabItem = styled.div<{ isActive?: boolean, isFirst?: boolean }>`
         background: var(--purple);
         ${({ isFirst }) => isFirst ? `border-radius: ${GV('radius-md')} 0 0 0;` : ''}
     }
+
+    @media (max-width: 560px) {
+        padding: .5rem 1.5rem
+    }
+
+    @media (max-width: 440px) {
+        padding: .5rem;
+    }
 `;
 
 export const BannerContainer = styled.div`
