@@ -30,4 +30,11 @@ export const DropdownContainer = styled.div`
     max-width: 18rem;
     padding: 0.5rem 1rem;
     background: var(--bg);
-`
+`;
+
+export const LoadButton = styled.button`
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--purple);
+    border-radius: ${GV('radius-md')};
+    font-size: ${GV('font-size-6')};
+`;

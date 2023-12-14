@@ -18,10 +18,11 @@ export const PublicLayoutWrapper = styled.div`
 export const MainWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: calc(100% - 200px);
     margin-left: 200px;
 
     @media (max-width: 768px) {
         margin: 0;
+        width: 100%;
     }
 `

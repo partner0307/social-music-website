@@ -97,20 +97,25 @@ const Settings = () => {
 
   const onSubmit = (e: any) => {
     e.preventDefault();
+    
+    if (!formData.displayName) {
+      notification.warning({ message: 'Warning', description: 'Please input display name' });
+      return;
+    }
+    if (!formData.username) {
+      notification.warning({ message: 'Warning', description: 'Please input profile URL' });
+      return;
+    }
+    if (!/^[A-z_0-9]+(?:[ _-][A-z0-9]+)*$/.test(formData.username)) {
+      notification.warning({ message: 'Warning', description: 'Username can contains only alphabet(A-Z, a-z), number(0-9), underscore(_).' });
+      return;
+    }
 
     Modal.confirm({
       title: 'Are you sure ?',
       content: 'Do you want to save this data ?',
+      
       async onOk() {
-        if (!formData.displayName) {
-          notification.warning({ message: 'Warning', description: 'Please input display name' });
-          return;
-        }
-        if (!formData.username) {
-          notification.warning({ message: 'Warning', description: 'Please input profile URL' });
-          return;
-        }
-
         const result = await updateProfile({ ...formData, id: user.id });
         if (result.success) {
           localStorage.setItem('token', result.accessToken);

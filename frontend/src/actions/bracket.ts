@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const getBrakets = async (payload: any) => {
     const result = await axios
-    .get(`${SERVER_URI}/bracket/index/${payload}`)
+    .post(`${SERVER_URI}/bracket/index`, payload)
     .then(res => res.data);
 
     return result;

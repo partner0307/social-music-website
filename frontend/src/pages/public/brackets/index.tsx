@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { BracketsContainer, CustomButton } from './style'
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { BracketsContainer, CustomButton, LoadButton } from './style'
 import { Flex, Grid, P } from '@/components/basic';
 import { useDispatch, useSelector } from 'react-redux';
 import { bracketActions } from '@/redux/bracket';
@@ -11,22 +11,44 @@ import { Radio, RadioChangeEvent } from 'antd';
 const Brackets = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: any) => state.auth);
-  const { brackets } = useSelector((state: any) => state.bracket);
+  const { brackets, visible } = useSelector((state: any) => state.bracket);
   const [ isMyHost, setMyHost ] = useState('all');
+  const [time, setTime] = useState(new Date());
+  const [offset, setOffset] = useState(0);
+  const isLoaded = useRef(false);
+
+  const getBracketsFromServer = async () => {
+    const result = await getBrakets({prevOffset: offset, nextOffset: offset + 12})
+    if (result.success)
+      dispatch(bracketActions.getBrackets(result.model));
+      setOffset(offset + 12);
+  };
 
   useEffect(() => {
-    setTimeout(async () => {
-      const result = await getBrakets(user.id);
-      if (result.success)
-        dispatch(bracketActions.getBrackets(result.model));
-    }, 0);
-  }, []);
+    if (!isLoaded.current) {
+      isLoaded.current = true;
+      setOffset(0);
+      getBracketsFromServer();
+    }
+    return () => {dispatch(bracketActions.refreshBrackets())}
+  }, [isLoaded]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(new Date()); 
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []); 
+
 
   const renderCards = useCallback(() => (
-    isMyHost === 'mine'
-      ? brackets.filter((item: any) => item.creator._id === user.id).map((item: any, key: number) => <BracketCard model={item} key={key} />)
+    brackets && isMyHost === 'mine'
+      ? brackets.filter((item: any) => item.creator._id === user.id).map((item: any, key: number) => <BracketCard model={item}  key={key} />)
       : brackets.map((item: any, key: number) => <BracketCard model={item} key={key} />)
   ), [brackets, isMyHost]);
+
+  const renderHostModal = useCallback(() => <HostModal />, [visible]);
 
   return (
     <BracketsContainer>
@@ -61,7 +83,13 @@ const Brackets = () => {
       }}>
         {renderCards()}
       </Grid>
-      <HostModal />
+      {brackets.length > 0 && <Flex $style={{
+        hAlign: 'center',
+        w: '100%'
+      }}>
+        <LoadButton onClick={() => getBracketsFromServer()}>Load more</LoadButton>
+      </Flex>}
+      {renderHostModal()}
     </BracketsContainer>
   )
 }

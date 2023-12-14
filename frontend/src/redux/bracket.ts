@@ -21,7 +21,7 @@ const bracketSlice = createSlice({
             state.bracket = null;
         },
         getBrackets: (state, action) => {
-            state.brackets = action.payload;
+            state.brackets = state.brackets.concat(action.payload);
             state.visible = false;
             state.bracket = null;
         },
@@ -37,6 +37,11 @@ const bracketSlice = createSlice({
         removeBracket: (state, action) => {
             state.brackets = state.brackets.filter((p: any) => p._id !== action.payload);
         },
+        refreshBrackets: (state) => {
+            state.bracket = null;
+            state.brackets = [];
+            state.visible = false;
+        }
     }
 });
 

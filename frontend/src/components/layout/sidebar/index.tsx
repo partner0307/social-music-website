@@ -16,6 +16,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { notification } from 'antd';
 import { GV } from '@/utils/style.util';
+import { useCallback } from 'react';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -35,6 +36,46 @@ const Sidebar = () => {
       navigate(router);
     }
   };
+
+  const renderMenus = useCallback(() => (
+    MenuData.map((data: any, key: number) => {
+      return (
+        <ListItemContainer key={key}>
+          {!data.submenus
+          ? (
+            !isAuthenticated && data.router.includes('/u/') ? null
+            : (
+              <ListItem
+                
+                isActive={ pathname === data.router || (data.router.includes('/u/') && pathname.includes('/u/')) || (data.router.includes('bracket_url') && pathname.length === 7) }
+                onClick={() => handleRoute(data.router)}
+              >
+                <data.icon />
+                <P>{data.text}</P>
+              </ListItem>
+            )
+          ) : (
+            <NestedItemList>
+              <NestedHand>
+                {/* <data.icon /> */}
+                <P>{data.text}</P>
+              </NestedHand>
+              {data.submenus.map((nestedItem: any, key: number) => (
+                <NestedItem
+                  key={key}
+                  isActive={pathname === nestedItem.router}
+                  isLast={key === data.submenus.length-1}
+                  onClick={() => handleRoute(nestedItem.router)}>
+                  {/* <data.icon size='12' /> */}
+                  <P $style={{ size: GV('font-size-6') }}>{nestedItem.text}</P>
+                </NestedItem>
+              ))}
+            </NestedItemList>
+          )}
+        </ListItemContainer>
+      );
+    })
+  ), [MenuData, pathname, isAuthenticated]);
 
   return (
     <SidebarContainer>
@@ -60,47 +101,10 @@ const Sidebar = () => {
         <Flex
           $style={{
             fDirection: 'column',
-            gap: '0.75rem',
             p: '1.5rem 0.5rem 0.5rem',
           }}
         >
-          {MenuData.map((data: any, key: number) => {
-            if (data.router === '/' || isAuthenticated) {
-              return (
-                <ListItemContainer key={key}>
-                  {!data.submenus ? (
-                    <ListItem
-                      isActive={
-                        pathname === data.router ||
-                        (data.router !== '/' && pathname.includes('/u/'))
-                      }
-                      onClick={() => handleRoute(data.router)}
-                    >
-                      <data.icon />
-                      <P>{data.text}</P>
-                    </ListItem>
-                  ) : (
-                    <NestedItemList>
-                      <NestedHand>
-                        {/* <data.icon /> */}
-                        <P>{data.text}</P>
-                      </NestedHand>
-                      {data.submenus.map((nestedItem: any, key: number) => (
-                        <NestedItem
-                          key={key}
-                          isActive={pathname === nestedItem.router}
-                          isLast={key === data.submenus.length-1}
-                          onClick={() => handleRoute(nestedItem.router)}>
-                          {/* <data.icon size='12' /> */}
-                          <P $style={{ size: GV('font-size-6') }}>{nestedItem.text}</P>
-                        </NestedItem>
-                      ))}
-                    </NestedItemList>
-                  )}
-                </ListItemContainer>
-              );
-            }
-          })}
+          {renderMenus()}
         </Flex>
       </SidebarWrapper>
     </SidebarContainer>

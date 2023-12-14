@@ -14,12 +14,19 @@ module.exports.index = async (req, res) => {
 };
 
 module.exports.save = async (req, res) => {
-    User.find({ username: req.body.username }).then(exist_user => {
-        if (exist_user.length > 1) {
-            res.json({ success: false, message: 'Username already exists!' });
-            return;
-        }
-        User.findById(req.body.id).then(model => {
+    User.findById(req.body.id).then(model => {
+        User.find({ username: req.body.username }).then(exist_users => {
+            let isExistUser = false;
+            exist_users.forEach(user => {
+                if (user._id.toString() !== model._id.toString()) {
+                    isExistUser = true;
+                }
+            });
+            if (isExistUser) {
+                res.json({ success: false, message: 'Username already exists' });
+                return;
+            }
+
             model.firstname = req.body.firstname ? req.body.firstname : model.firstname;
             model.lastname = req.body.lastname ? req.body.lastname : model.lastname;
             model.displayName = req.body.displayName;

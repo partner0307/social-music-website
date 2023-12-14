@@ -45,9 +45,11 @@ const Submission = () => {
       <BannerContainer>
         <Image src={`${UPLOAD_URI}${bracket && bracket.banner}`} alt='' $style={{ w: '100%', h: '100%' }} />
       </BannerContainer>
-      <BannerTitle>{bracket && bracket.title}</BannerTitle>
+      {/* <BannerTitle>{bracket && bracket.title}</BannerTitle> */}
       <SubmissionContentWrapper>
-        <SubmissionContent dangerouslySetInnerHTML={{ __html: content() }} />
+        <SubmissionContent>
+          <div dangerouslySetInnerHTML={{ __html: content() }} />
+        </SubmissionContent>
       </SubmissionContentWrapper>
     </SubmissionContainer>
   )

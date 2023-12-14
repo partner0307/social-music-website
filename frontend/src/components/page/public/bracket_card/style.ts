@@ -7,6 +7,7 @@ export const CardContainer = styled.div`
     flex-direction: column;
     gap: 1rem;
     width: 100%;
+    height: 100%;
     border: 1px solid ${GV('purple')};
     border-radius: 0.5rem;
     transition: all .3s ease;
@@ -16,7 +17,15 @@ export const CardContainer = styled.div`
     }
 `;
 
+export const CardWrapper = styled.div`
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+`
+
 export const CardTitle = styled.div`
+    max-height: 50px;
     color: ${GV('white')};
     font-size: 1.25rem;
     font-weight: 800;
@@ -27,10 +36,13 @@ export const CardTitle = styled.div`
 `
 
 export const CardContent = styled.div`
+    flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 1rem;
     width: 100%;
+    height: 100%;
     padding: 0 0.5rem 0.5rem;
 `;
 
@@ -39,7 +51,44 @@ export const CardAction = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 0 0.5rem 1rem;
+    height: 3rem;
+    padding: 0 0.5rem;
+`;
+
+export const CardActionInnerWrapper = styled.div`
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+`;
+
+export const Dropdown = styled.div<{ isDropdown: boolean }>`
+  position: absolute;
+  top: 100%;
+  right: 1rem;
+  background: ${GV('gray')};
+  border: 0.5px solid ${GV('bg')};
+  box-shadow: 0 10px 30px ${GV('bg')};
+  z-index: 9000;
+
+  ${({ isDropdown }) => isDropdown ? `display: block;` : `display: none;`}
+  transition: all .3s ease-in-out;
+`;
+
+export const DropdownItemContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1.25rem;
+
+  &:first-child {
+    border-bottom: 0.5px solid #333;
+  }
+
+  &:hover {
+    background: ${GV('bg')};
+  }
 `;
 
 export const StatusTab = styled.div<{ isOpen?: boolean }>`

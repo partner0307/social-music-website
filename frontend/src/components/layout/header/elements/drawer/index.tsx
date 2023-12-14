@@ -36,7 +36,7 @@ const MenuDrawer: FC = () => {
   const handleRoute = (router: string) => {
     if (isAuthenticated) {
       if (router.includes('username')) {
-        navigate(`/${user.username}`);
+        navigate(`/u/${user.username}`);
         dispatch(menuActions.setVisible(false));
       } else {
         navigate(router);
@@ -69,37 +69,38 @@ const MenuDrawer: FC = () => {
         }}
       >
         {MenuData.map((data: any, key: number) => {
-          if (data.router === '/' || isAuthenticated) {
-            return (
-              <ListItemContainer key={key}>
-                {!data.submenus ? (
+          return (
+            <ListItemContainer key={key}>
+              {!data.submenus
+              ? (
+                !isAuthenticated && data.router.includes('/u/') ? <></>
+                : (
                   <ListItem
-                    isActive={
-                      pathname === data.router ||
-                      (data.router !== '/' && pathname.includes(user.url))
-                    }
+                    isActive={ pathname === data.router || (data.router.includes('/u/') && pathname.includes('/u/')) || (data.router.includes('bracket_url') && pathname.length === 7) }
                     onClick={() => handleRoute(data.router)}
                   >
                     <data.icon />
                     <P>{data.text}</P>
                   </ListItem>
-                ) : (
-                  <NestedItemList>
-                    <NestedHand>
-                      {/* <data.icon /> */}
-                      <P>{data.text}</P>
-                    </NestedHand>
-                    {data.submenus.map((nestedItem: any, key: number) => (
-                      <NestedItem key={key}>
-                        {/* <data.icon size='12' /> */}
-                        <P $style={{ size: GV('font-size-6') }}>{nestedItem.text}</P>
-                      </NestedItem>
-                    ))}
-                  </NestedItemList>
-                )}
-              </ListItemContainer>
-            );
-          }
+                )
+              ) : (
+                <NestedItemList>
+                  <NestedHand>
+                    {/* <data.icon /> */}
+                    <P>{data.text}</P>
+                  </NestedHand>
+                  {data.submenus.map((nestedItem: any, key: number) => (
+                    <NestedItem
+                      key={key}
+                      onClick={() => handleRoute(nestedItem.router)}>
+                      {/* <data.icon size='12' /> */}
+                      <P $style={{ size: GV('font-size-6') }}>{nestedItem.text}</P>
+                    </NestedItem>
+                  ))}
+                </NestedItemList>
+              )}
+            </ListItemContainer>
+          );
         })}
         {!isAuthenticated &&
           authMenus.map((p, i) => (
@@ -112,4 +113,4 @@ const MenuDrawer: FC = () => {
   );
 };
 
-export default MenuDrawer;
+export default React.memo(MenuDrawer);
