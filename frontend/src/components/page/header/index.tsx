@@ -1,5 +1,5 @@
 import { Modal } from 'antd';
-import { FC } from 'react';
+import React, { FC } from 'react';
 import Settings from './settings';
 
 interface SettingModalType {
@@ -15,4 +15,4 @@ const SettingModal: FC<SettingModalType> = ({ visible, onChange }) => {
   )
 }
 
-export default SettingModal;
+export default React.memo(SettingModal);

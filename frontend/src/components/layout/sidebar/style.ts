@@ -64,6 +64,7 @@ export const ListItem = styled.div<{ isActive?: boolean }>`
   border-radius: .5rem;
   width: 100%;
   cursor: pointer;
+  margin: 0.375rem 0;
 
   ${({ isActive }) => isActive ? `background: ${GV('purple')};` : `background: ${GV('gray')};`}
 

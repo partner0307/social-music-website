@@ -19,6 +19,9 @@ export const LabelContainer = styled.div`
 `;
 
 export const SubmitButton = styled.button`
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     margin-top: 1rem;
     padding: 0.5rem 4rem;
     background: ${GV('purple')};

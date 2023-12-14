@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import React, { FC } from 'react'
 import { Modal } from 'antd'
 import Signin from './signin'
 import Signup from './signup'
@@ -16,4 +16,4 @@ const AuthModal: FC = () => {
   )
 }
 
-export default AuthModal;
+export default React.memo(AuthModal);

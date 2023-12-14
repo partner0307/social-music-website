@@ -15,7 +15,7 @@ const storageEngine = multer.diskStorage({
 
 const bracket = require("../controllers/bracket.controller");
 
-router.get("/index/:id", bracket.index);
+router.post("/index", bracket.index);
 router.post("/save", bracket.save);
 router.get("/edit/:id", bracket.edit);
 router.delete("/remove/:id", bracket.remove);

@@ -2,8 +2,7 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import React, { FC, useEffect, useState } from 'react';
 import { DatePicker, Modal, Upload, notification } from 'antd';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import ReactQuill from 'react-quill';
 import { LabelContainer, HostModalWrapper, SubmitButton, UploadButton, BannerContainer, BannerOverlay } from './style';
 import { Flex, P } from '@/components/basic';
 import { GV } from '@/utils/style.util';
@@ -15,6 +14,23 @@ import { hostBracket, uploadImage } from '@/actions/bracket';
 import { bracketActions } from '@/redux/bracket';
 
 dayjs.extend(customParseFormat);
+
+const modules = {
+    toolbar: [
+        [{ 'header': [1, 2, false] }],
+        ['bold', 'italic', 'underline','strike', 'blockquote'],
+        [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+        ['link', 'image'],
+        ['clean']
+    ],
+};
+
+const formats = [
+    'header',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent',
+    'link', 'image'
+];
 
 const HostModal = () => {
     const dispatch = useDispatch();
@@ -32,7 +48,10 @@ const HostModal = () => {
     const [file, setFile] = useState('');
     const [banner, setBanner] = useState<string | ArrayBuffer | null>(`${UPLOAD_URI}/banner.png`);
 
-    const refreshModal = () => dispatch(bracketActions.setVisible(false));
+    const refreshModal = () => {
+        setFormData({ title: '', start_date: '', vote_date: '', details: '', prizes: '', rules: '', max_player: 0 });
+        dispatch(bracketActions.setVisible(false))
+    };
 
     const handleImageChange = (file: any) => {
         setFile(file);
@@ -65,6 +84,10 @@ const HostModal = () => {
             notification.warning({ message: 'Warning', description: 'Please input max player number correctly' });
             return;
         }
+        if (new Date(formData.start_date).getTime() > new Date(formData.vote_date).getTime()) {
+            notification.warning({ message: 'Warning', description: 'Please select date correctly' });
+            return;
+        }
 
         Modal.confirm({
             title: 'Are you sure ?',
@@ -94,8 +117,6 @@ const HostModal = () => {
     }
     
     useEffect(() => {
-        setFile('');
-        setBanner(`${UPLOAD_URI}/banner.png`);
         setFormData({
             title: bracket ? bracket.title : '',
             start_date: bracket ? bracket.start_date : '',
@@ -104,8 +125,10 @@ const HostModal = () => {
             prizes: bracket ? bracket.prizes : '',
             rules: bracket ? bracket.rules : '',
             max_player: bracket ? bracket.max_player : 0
-        })
-    }, []);
+        });
+        setFile('');
+        setBanner(`${UPLOAD_URI}/banner.png`);
+    }, [bracket]);
 
     return (
         <Modal
@@ -173,30 +196,36 @@ const HostModal = () => {
                 </Flex>
                 <LabelContainer>
                     <P $style={{ size: GV('font-size-6') }}>Details</P>
-                    <CKEditor
-                        editor={ClassicEditor}
-                        data={formData.details}
-                        onChange={(event, editor) => setFormData({ ...formData, details: editor.getData() })}
-                        onReady={(editor: any) => editor.editing.view.change((writer: any) => writer.setStyle('height', '200px', editor.editing.view.document.getRoot()))}
-                    />
+                    <ReactQuill
+                        theme='snow'
+                        modules={modules}
+                        formats={formats}
+                        defaultValue={formData.details}
+                        value={formData.details}
+                        style={{ height: '100%' }}
+                        onChange={(value) => setFormData({ ...formData, details: value })} />
                 </LabelContainer>
                 <LabelContainer>
                     <P $style={{ size: GV('font-size-6') }}>Prizes</P>
-                    <CKEditor
-                        editor={ClassicEditor}
-                        data={formData.prizes}
-                        onChange={(event, editor) => setFormData({ ...formData, prizes: editor.getData() })}
-                        onReady={(editor: any) => editor.editing.view.change((writer: any) => writer.setStyle('height', '200px', editor.editing.view.document.getRoot()))}
-                     />
+                    <ReactQuill
+                        theme='snow'
+                        modules={modules}
+                        formats={formats}
+                        defaultValue={formData.prizes}
+                        value={formData.prizes}
+                        style={{ height: '100%' }}
+                        onChange={(value) => setFormData({ ...formData, prizes: value })} />
                 </LabelContainer>
                 <LabelContainer>
                     <P $style={{ size: GV('font-size-6') }}>Rules</P>
-                    <CKEditor 
-                        editor={ClassicEditor} 
-                        data={formData.rules} 
-                        onChange={(event, editor) => setFormData({ ...formData, rules: editor.getData() })} 
-                        onReady={(editor: any) => editor.editing.view.change((writer: any) => writer.setStyle('height', '200px', editor.editing.view.document.getRoot()))}
-                    />
+                    <ReactQuill
+                        theme='snow'
+                        modules={modules}
+                        formats={formats}
+                        defaultValue={formData.rules}
+                        value={formData.rules}
+                        style={{ height: '100%' }}
+                        onChange={(value) => setFormData({ ...formData, rules: value })} />
                 </LabelContainer>
                 <Flex $style={{ hAlign: 'flex-end' }}>
                     <SubmitButton type="submit">Save</SubmitButton>
@@ -206,4 +235,4 @@ const HostModal = () => {
     )
 }
 
-export default HostModal
+export default React.memo(HostModal);

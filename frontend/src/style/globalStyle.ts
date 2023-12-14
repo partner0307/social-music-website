@@ -296,27 +296,6 @@ const GlobalStyle = createGlobalStyle`
 	th {
 		padding: 0;
 	}
-
-	&::-webkit-scrollbar {
-		position: absolute;
-		width: 8px;
-		height: 8px;
-	}
-
-	&::-webkit-scrollbar-track {
-		background: #eee;
-		border-radius: 5px;
-		box-shadow: #eee;
-	}
-
-	&::-webkit-scrollbar-thumb {
-		background: #a6a7c7ac;
-		border-radius: 5px;
-	}
-
-	&::-webkit-scrollbar-thumb:hover {
-		background: #a6a7c7;
-	}
 	.swiper {
 		max-width: 100%;
 		height: 100%;
