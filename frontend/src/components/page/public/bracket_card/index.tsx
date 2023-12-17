@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import moment from 'moment';
 import Image from '@/components/basic/img';
 import { ActionMenuButton, CardAction, CardActionInnerWrapper, CardContainer, CardContent, CardTitle, CardWrapper, Dropdown, DropdownItemContainer, StatusTab } from './style';
@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { Icon } from '@/components/custom';
 import { AiFillEdit } from "react-icons/ai";
 import { BiSolidTrashAlt } from "react-icons/bi";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { bracketActions } from '@/redux/bracket';
 
 interface BracketCardType {
@@ -29,6 +29,7 @@ const BracketCard: FC<BracketCardType> = ({ model }) => {
     const dropdownRef: any = useRef(null);
     const actionButtonRef:any = useRef(null);
     const [isDropdown, setIsDropdown] = useState<boolean>(false);
+    const { user } = useSelector((state: any) => state.auth);
 
     useEffect(() => {
         const windowClick = (e: any) => {
@@ -83,7 +84,7 @@ const BracketCard: FC<BracketCardType> = ({ model }) => {
             </CardContent>
             <CardAction>
                 <StatusTab isOpen={currentDate < voteDate}>{ currentDate < voteDate ? 'Open' : 'Closed' }</StatusTab>
-                <CardActionInnerWrapper>
+                {user && <CardActionInnerWrapper>
                     <ActionMenuButton ref={actionButtonRef}><Icon icon='ActionMenu'/></ActionMenuButton>
                     <Dropdown isDropdown={isDropdown} ref={dropdownRef}>
                         <DropdownItemContainer onClick={() => { setIsDropdown(false); dispatch(bracketActions.editBracket(model)); }}>
@@ -95,7 +96,7 @@ const BracketCard: FC<BracketCardType> = ({ model }) => {
                             <P>Remove</P>
                         </DropdownItemContainer>
                     </Dropdown>
-                </CardActionInnerWrapper>
+                </CardActionInnerWrapper>}
             </CardAction>
         </CardWrapper>
     </CardContainer>
