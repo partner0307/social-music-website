@@ -6,16 +6,24 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import _ROUTERS from '@/constants/route.constant';
 import { getBracketByUrl } from '@/actions/bracket';
 import Loading from '@/components/custom/loading';
+import { useSelector } from 'react-redux';
+import { notification } from 'antd';
 
 const Tournament = () => {
   const navigate = useNavigate();
   const { hash, pathname, search } = useLocation();
+  const { user } = useSelector((state: any) => state.auth);
   const [tabIndex, setTabIndex] = useState(1);
   const [bracket, setBracket] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const url = pathname.split('/')[1];
 
   const onEnterBracket = () => {
+    if (!user) {
+      notification.warning({ message: 'Warning', description: 'Please login!' });
+      return;
+    }
+
     setTabIndex(tabIndex + 1);
     const router = tabIndex === 1 ? _ROUTERS._QUALIFY : tabIndex === 2 ? _ROUTERS._WINNER : _ROUTERS._TOURNAMENT;
     navigate(router);

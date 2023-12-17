@@ -30,8 +30,8 @@ const Sidebar = () => {
       } else {
         navigate(router);
       }
-    } else if (router !== '/' && !isAuthenticated) {
-      notification.warning({ message: 'Warning', description: 'Please login!' });
+    } else if (router === '/brackets' && !isAuthenticated) {
+      navigate(router);
     } else if (router === '/' && !isAuthenticated) {
       navigate(router);
     }

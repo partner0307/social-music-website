@@ -56,8 +56,8 @@ const Brackets = () => {
         hAlign: 'space-between',
         vAlign: 'center'
       }}>
-        {user.isHost && <CustomButton onClick={() => dispatch(bracketActions.setVisible(true))}>Host</CustomButton>}
-        {user.isHost && (
+        {user && user.isHost && <CustomButton onClick={() => dispatch(bracketActions.setVisible(true))}>Host</CustomButton>}
+        {user && user.isHost && (
           <Radio.Group defaultValue="all" buttonStyle="solid" onChange={(e: RadioChangeEvent) => setMyHost(e.target.value)}>
             <Radio.Button value="all">All</Radio.Button>
             <Radio.Button value="mine">My Hosts</Radio.Button>
